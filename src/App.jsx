@@ -1,6 +1,7 @@
 import ListBasicItemCard from "./components/ListBasicItemCard";
 import { useState } from "react";
 import { useContext } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 function App() {
   return (
