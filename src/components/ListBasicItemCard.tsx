@@ -7,6 +7,11 @@ import itemsData from '../data/items.json';
 export default function ListBasicItemCard({ n = 60, keyword = '', ascending = false}) {
     let dataList = itemsData.items;
     let forUseBasicItemList: BasicItem[] = [];
+    let l = 0;
+    let i = 0;
+    let maxI = dataList.length
+
+    console.log(keyword);
 
     dataList.sort((a, b) => {
         const priceA = a.avg24hPrice || 0;
@@ -16,19 +21,28 @@ export default function ListBasicItemCard({ n = 60, keyword = '', ascending = fa
         return priceA - priceB
     });
 
-    for (var i = 0; i < n; i++) {
+    while (l < n) {
         let tempObject = dataList[i];
-        let tempBasicItem: BasicItem = new BasicItem(
-            tempObject.id,
-            tempObject.name,
-            tempObject.image8xLink,
-            tempObject.avg24hPrice,
-            tempObject.basePrice,
-            tempObject.height,
-            tempObject.width,
-            tempObject.weight
-        );
-        forUseBasicItemList.push(tempBasicItem);
+        i ++;
+
+        if (i >= maxI - 1) {
+            break;
+        }
+
+        if (tempObject.name.toLowerCase().includes(keyword.toLowerCase())) {
+            let tempBasicItem: BasicItem = new BasicItem(
+                tempObject.id,
+                tempObject.name,
+                tempObject.image8xLink,
+                tempObject.avg24hPrice,
+                tempObject.basePrice,
+                tempObject.height,
+                tempObject.width,
+                tempObject.weight
+            );
+            forUseBasicItemList.push(tempBasicItem);
+            l ++;
+        }
     }
 
     console.log(forUseBasicItemList);

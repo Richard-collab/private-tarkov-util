@@ -11,7 +11,7 @@ function App() {
       <SpeedInsights/>
       <Analytics/>
       <SearchBar onSearch={kw => setSearchKeyword(kw)} />
-      <ListBasicItemCard n={10} ascending={true} keyword={searchKeyword} />
+      <ListBasicItemCard n={20} ascending={false} keyword={searchKeyword} />
     </>
   )
 }
