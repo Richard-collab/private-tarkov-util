@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 
-const SearchBar: React.FC = () => {
+const SearchBar: React.FC<{ onSearch: (keyword: string) => void }> = ({ onSearch }) => {
   const [keyword, setKeyword] = useState('');
 
   const handleSearch = () => {
-    // 这里可以处理搜索逻辑，比如请求接口或过滤列表
-    console.log('搜索关键词:', keyword);
+    onSearch(keyword);
   };
 
   return (
