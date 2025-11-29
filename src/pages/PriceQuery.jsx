@@ -290,7 +290,7 @@ const PriceQuery = () => {
                   sx={{
                     position: 'absolute',
                     bottom: 8,
-                    left: 8,
+                    right: 8,
                   }}
                 >
                   <IconButton
