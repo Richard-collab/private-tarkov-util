@@ -22,11 +22,16 @@ import {
   Paper,
   Container,
   Divider,
+  IconButton,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 // 导入物品数据（mock 数据）
 import itemsData from '../data/items.json';
+// 导入收藏功能工具
+import { isFavorited, toggleFavorite } from '../utils/favorites';
 
 /**
  * 物价查询页面组件
@@ -39,6 +44,32 @@ const PriceQuery = () => {
   const [queryResults, setQueryResults] = useState([]);
   // 是否已执行过查询的标志
   const [hasSearched, setHasSearched] = useState(false);
+  // 收藏状态映射，key为物品ID，value为是否收藏
+  const [favoritesMap, setFavoritesMap] = useState({});
+
+  /**
+   * 处理收藏按钮点击
+   * @param {string} itemId - 物品ID
+   */
+  const handleFavoriteClick = (itemId) => {
+    const newStatus = toggleFavorite(itemId);
+    setFavoritesMap((prev) => ({
+      ...prev,
+      [itemId]: newStatus,
+    }));
+  };
+
+  /**
+   * 检查物品是否已被收藏（先查本地状态，再查localStorage）
+   * @param {string} itemId - 物品ID
+   * @returns {boolean} 是否已收藏
+   */
+  const checkFavorited = (itemId) => {
+    if (favoritesMap[itemId] !== undefined) {
+      return favoritesMap[itemId];
+    }
+    return isFavorited(itemId);
+  };
 
   /**
    * 处理搜索操作
@@ -183,6 +214,7 @@ const PriceQuery = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'transform 0.2s, box-shadow 0.2s',
+                  position: 'relative',
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     boxShadow: 4,
@@ -267,6 +299,31 @@ const PriceQuery = () => {
                     </Typography>
                   </Box>
                 </CardContent>
+                {/* 收藏按钮 - 固定在左下角，与 BasicItemCard 保持一致 */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: 8,
+                    left: 8,
+                  }}
+                >
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleFavoriteClick(item.id);
+                    }}
+                    sx={{
+                      color: checkFavorited(item.id) ? 'warning.main' : 'action.disabled',
+                      bgcolor: checkFavorited(item.id) ? 'rgba(255, 193, 7, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                      '&:hover': {
+                        bgcolor: checkFavorited(item.id) ? 'rgba(255, 193, 7, 0.2)' : 'rgba(0, 0, 0, 0.08)',
+                      },
+                    }}
+                    aria-label={checkFavorited(item.id) ? '取消收藏' : '添加收藏'}
+                  >
+                    {checkFavorited(item.id) ? <StarIcon /> : <StarBorderIcon />}
+                  </IconButton>
+                </Box>
               </Card>
             </Grid>
           ))}
