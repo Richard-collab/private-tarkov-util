@@ -15,11 +15,11 @@ import { Analytics } from '@vercel/analytics/react';
 
 // 导入组件
 import Sidebar from './components/Sidebar';
+import Home from './pages/Home';
+import PriceQuery from './pages/PriceQuery';
 
 // 侧边栏宽度常量
 const DRAWER_WIDTH = 240;
-import Home from './pages/Home';
-import PriceQuery from './pages/PriceQuery';
 
 /**
  * 创建 Material-UI 主题配置
