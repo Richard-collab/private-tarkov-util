@@ -10,7 +10,7 @@
  * 收藏数据存储在 localStorage 中，不需要后端支持
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Box, Typography, Grid, Pagination, Paper } from '@mui/material';
 import BasicItemCard from './BasicItemCard';
 import BasicItem from '../utils/BasicItem';
@@ -21,6 +21,9 @@ import itemsData from '../data/items.json';
 
 // 每页显示的物品数量
 const ITEMS_PER_PAGE = 20;
+
+// 创建物品ID到物品数据的映射，提高查找效率 O(1)
+const itemsMap = new Map(itemsData.items.map(item => [item.id, item]));
 
 /**
  * 收藏物品组件
@@ -34,14 +37,15 @@ export default function FavoritedItems() {
 
     /**
      * 加载收藏物品数据
+     * 返回加载后的物品数量
      */
     const loadFavoritedItems = useCallback(() => {
         const favoriteIds = getFavoriteIds();
         
-        // 从物品数据中筛选收藏的物品
+        // 使用Map进行O(1)查找，从物品数据中筛选收藏的物品
         const items: BasicItem[] = [];
         favoriteIds.forEach((id) => {
-            const itemData = itemsData.items.find((item) => item.id === id);
+            const itemData = itemsMap.get(id);
             if (itemData) {
                 const basicItem = new BasicItem(
                     itemData.id,
@@ -58,6 +62,7 @@ export default function FavoritedItems() {
         });
         
         setFavoritedItems(items);
+        return items.length;
     }, []);
 
     // 组件挂载时加载收藏物品
@@ -70,15 +75,18 @@ export default function FavoritedItems() {
      * 当物品收藏状态改变时重新加载列表
      */
     const handleFavoriteChange = useCallback(() => {
-        loadFavoritedItems();
-        // 如果当前页没有物品了，回到第一页
-        const totalPages = Math.ceil((favoritedItems.length - 1) / ITEMS_PER_PAGE);
-        if (page > totalPages && totalPages > 0) {
-            setPage(totalPages);
-        } else if (totalPages === 0) {
-            setPage(1);
-        }
-    }, [loadFavoritedItems, favoritedItems.length, page]);
+        const newLength = loadFavoritedItems();
+        // 使用新加载后的长度计算页码，避免使用过时的状态
+        setPage(currentPage => {
+            const newTotalPages = Math.ceil(newLength / ITEMS_PER_PAGE);
+            if (currentPage > newTotalPages && newTotalPages > 0) {
+                return newTotalPages;
+            } else if (newTotalPages === 0) {
+                return 1;
+            }
+            return currentPage;
+        });
+    }, [loadFavoritedItems]);
 
     /**
      * 处理页码变化
@@ -90,7 +98,7 @@ export default function FavoritedItems() {
     // 计算当前页显示的物品
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
-    const currentItems = favoritedItems.slice(startIndex, endIndex);
+    const currentItems = useMemo(() => favoritedItems.slice(startIndex, endIndex), [favoritedItems, startIndex, endIndex]);
     const totalPages = Math.ceil(favoritedItems.length / ITEMS_PER_PAGE);
 
     // 如果没有收藏物品，不显示组件

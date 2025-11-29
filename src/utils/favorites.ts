@@ -28,6 +28,8 @@ export function getFavoriteIds(): string[] {
     }
     return [];
   } catch {
+    // localStorage access or JSON parsing failed (e.g., corrupted data, quota exceeded)
+    // Return empty array as a safe fallback to allow normal operation
     return [];
   }
 }
