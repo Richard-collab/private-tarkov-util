@@ -44,31 +44,17 @@ const PriceQuery = () => {
   const [queryResults, setQueryResults] = useState([]);
   // 是否已执行过查询的标志
   const [hasSearched, setHasSearched] = useState(false);
-  // 收藏状态映射，key为物品ID，value为是否收藏
-  const [favoritesMap, setFavoritesMap] = useState({});
+  // 用于触发重新渲染的状态，当收藏状态改变时更新
+  const [, setFavoriteToggle] = useState(false);
 
   /**
    * 处理收藏按钮点击
    * @param {string} itemId - 物品ID
    */
   const handleFavoriteClick = (itemId) => {
-    const newStatus = toggleFavorite(itemId);
-    setFavoritesMap((prev) => ({
-      ...prev,
-      [itemId]: newStatus,
-    }));
-  };
-
-  /**
-   * 检查物品是否已被收藏（先查本地状态，再查localStorage）
-   * @param {string} itemId - 物品ID
-   * @returns {boolean} 是否已收藏
-   */
-  const checkFavorited = (itemId) => {
-    if (favoritesMap[itemId] !== undefined) {
-      return favoritesMap[itemId];
-    }
-    return isFavorited(itemId);
+    toggleFavorite(itemId);
+    // 触发重新渲染以反映最新的收藏状态
+    setFavoriteToggle((prev) => !prev);
   };
 
   /**
@@ -313,15 +299,15 @@ const PriceQuery = () => {
                       handleFavoriteClick(item.id);
                     }}
                     sx={{
-                      color: checkFavorited(item.id) ? 'warning.main' : 'action.disabled',
-                      bgcolor: checkFavorited(item.id) ? 'rgba(255, 193, 7, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                      color: isFavorited(item.id) ? 'warning.main' : 'action.disabled',
+                      bgcolor: isFavorited(item.id) ? 'rgba(255, 193, 7, 0.1)' : 'rgba(0, 0, 0, 0.04)',
                       '&:hover': {
-                        bgcolor: checkFavorited(item.id) ? 'rgba(255, 193, 7, 0.2)' : 'rgba(0, 0, 0, 0.08)',
+                        bgcolor: isFavorited(item.id) ? 'rgba(255, 193, 7, 0.2)' : 'rgba(0, 0, 0, 0.08)',
                       },
                     }}
-                    aria-label={checkFavorited(item.id) ? '取消收藏' : '添加收藏'}
+                    aria-label={isFavorited(item.id) ? '取消收藏' : '添加收藏'}
                   >
-                    {checkFavorited(item.id) ? <StarIcon /> : <StarBorderIcon />}
+                    {isFavorited(item.id) ? <StarIcon /> : <StarBorderIcon />}
                   </IconButton>
                 </Box>
               </Card>
