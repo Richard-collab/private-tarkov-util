@@ -22,11 +22,16 @@ import {
   Paper,
   Container,
   Divider,
+  IconButton,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 // 导入物品数据（mock 数据）
 import itemsData from '../data/items.json';
+// 导入收藏功能工具
+import { isFavorited, toggleFavorite } from '../utils/favorites';
 
 /**
  * 物价查询页面组件
@@ -39,6 +44,18 @@ const PriceQuery = () => {
   const [queryResults, setQueryResults] = useState([]);
   // 是否已执行过查询的标志
   const [hasSearched, setHasSearched] = useState(false);
+  // 用于触发重新渲染的状态，当收藏状态改变时更新
+  const [, setFavoriteToggle] = useState(false);
+
+  /**
+   * 处理收藏按钮点击
+   * @param {string} itemId - 物品ID
+   */
+  const handleFavoriteClick = (itemId) => {
+    toggleFavorite(itemId);
+    // 触发重新渲染以反映最新的收藏状态
+    setFavoriteToggle((prev) => !prev);
+  };
 
   /**
    * 处理搜索操作
@@ -183,6 +200,7 @@ const PriceQuery = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   transition: 'transform 0.2s, box-shadow 0.2s',
+                  position: 'relative',
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     boxShadow: 4,
@@ -267,6 +285,31 @@ const PriceQuery = () => {
                     </Typography>
                   </Box>
                 </CardContent>
+                {/* 收藏按钮 - 固定在左下角，与 BasicItemCard 保持一致 */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    bottom: 8,
+                    left: 8,
+                  }}
+                >
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleFavoriteClick(item.id);
+                    }}
+                    sx={{
+                      color: isFavorited(item.id) ? 'warning.main' : 'action.disabled',
+                      bgcolor: isFavorited(item.id) ? 'rgba(255, 193, 7, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                      '&:hover': {
+                        bgcolor: isFavorited(item.id) ? 'rgba(255, 193, 7, 0.2)' : 'rgba(0, 0, 0, 0.08)',
+                      },
+                    }}
+                    aria-label={isFavorited(item.id) ? '取消收藏' : '添加收藏'}
+                  >
+                    {isFavorited(item.id) ? <StarIcon /> : <StarBorderIcon />}
+                  </IconButton>
+                </Box>
               </Card>
             </Grid>
           ))}
