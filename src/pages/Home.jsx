@@ -2,12 +2,14 @@
  * 首页组件
  * 
  * 该组件展示应用的欢迎页面，显示 "Private Tarkov Util" 标题
+ * 以及用户收藏的物品
  * 
  * 这是应用的主入口页面
  */
 
 import React from 'react';
 import { Container, Typography, Box } from '@mui/material';
+import FavoritedItems from '../components/FavoritedItems';
 
 /**
  * 首页组件
@@ -16,6 +18,11 @@ import { Container, Typography, Box } from '@mui/material';
 const Home = () => {
   return (
     <Container maxWidth="xl">
+      {/* 收藏物品区域 - 显示在页面顶部 */}
+      <Box sx={{ mt: 2 }}>
+        <FavoritedItems />
+      </Box>
+
       {/* 页面主要内容区域 */}
       <Box
         sx={{

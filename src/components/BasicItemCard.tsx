@@ -5,17 +5,23 @@
 // // import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
 
-import {Card, CardContent, CardMedia} from '@mui/material'
+import { useState } from 'react';
+import {Card, CardContent, CardMedia, IconButton, Box} from '@mui/material'
 import Typography from '@mui/material/Typography';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 import BasicItem from '../utils/BasicItem';
+import { isFavorited, toggleFavorite } from '../utils/favorites';
 
 // 定义 Props 的接口结构
 interface BasicItemCardProps {
-    x:BasicItem;
+    x: BasicItem;
+    onFavoriteChange?: (itemId: string, isFavorited: boolean) => void;
 }
 
-export default function BasicItemCard({ x }: BasicItemCardProps) {
+export default function BasicItemCard({ x, onFavoriteChange }: BasicItemCardProps) {
+    const [favorited, setFavorited] = useState<boolean>(() => isFavorited(x.itemId));
 
     function backgroundColor(slotPrice:number):string {
         if (slotPrice >= 500000) {
@@ -25,11 +31,20 @@ export default function BasicItemCard({ x }: BasicItemCardProps) {
         return '#f0f0f0'
     }
 
+    const handleFavoriteClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const newStatus = toggleFavorite(x.itemId);
+        setFavorited(newStatus);
+        if (onFavoriteChange) {
+            onFavoriteChange(x.itemId, newStatus);
+        }
+    };
+
     let cardColor:string = backgroundColor(x.averageSlotPriceMarket);
 
     return (
         <>
-        <Card sx={{ maxWidth: 345, bgcolor: cardColor }}>
+        <Card sx={{ maxWidth: 345, bgcolor: cardColor, position: 'relative' }}>
             <CardMedia
                 component="img"
                 image={x.imageLink} // 替换你的图片链接
@@ -56,6 +71,28 @@ export default function BasicItemCard({ x }: BasicItemCardProps) {
                     单格价值: {x.averageSlotPriceMarket}
                 </Typography>
             </CardContent>
+            {/* 收藏按钮 - 固定在左下角 */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    bottom: 8,
+                    left: 8,
+                }}
+            >
+                <IconButton
+                    onClick={handleFavoriteClick}
+                    sx={{
+                        color: favorited ? 'warning.main' : 'action.disabled',
+                        bgcolor: favorited ? 'rgba(255, 193, 7, 0.1)' : 'rgba(0, 0, 0, 0.04)',
+                        '&:hover': {
+                            bgcolor: favorited ? 'rgba(255, 193, 7, 0.2)' : 'rgba(0, 0, 0, 0.08)',
+                        },
+                    }}
+                    aria-label={favorited ? '取消收藏' : '添加收藏'}
+                >
+                    {favorited ? <StarIcon /> : <StarBorderIcon />}
+                </IconButton>
+            </Box>
         </Card>
         </>
     )
