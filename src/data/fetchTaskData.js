@@ -121,8 +121,10 @@ export async function fetchTasksFromAPI() {
 }
 
 // 如果直接运行此脚本，则获取数据并保存到文件
+// 使用更可靠的主模块检测方式
+const currentModulePath = fileURLToPath(import.meta.url);
 // eslint-disable-next-line no-undef
-const isMainModule = typeof process !== 'undefined' && process.argv[1] && process.argv[1].includes('fetchTaskData');
+const isMainModule = typeof process !== 'undefined' && process.argv[1] === currentModulePath;
 if (isMainModule) {
     fetchTasksFromAPI()
         .then(async (data) => {

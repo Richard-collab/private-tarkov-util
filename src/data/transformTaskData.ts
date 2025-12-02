@@ -85,11 +85,21 @@ export interface APITasksResponse {
 }
 
 /**
+ * 货币名称常量
+ */
+const CURRENCY_ROUBLES = '卢布';
+
+/**
+ * API 返回的目标类型定义
+ */
+type APIObjective = NonNullable<APITask['objectives']>[number];
+
+/**
  * 将 API 目标数据转换为 TaskObjective 格式
  * @param objective - API 返回的目标数据
  * @returns TaskObjective 格式数据
  */
-function transformObjective(objective: APITask['objectives'][0]): TaskObjective {
+function transformObjective(objective: APIObjective): TaskObjective {
   return {
     id: objective.id,
     description: objective.description,
@@ -121,10 +131,11 @@ function transformRewards(finishRewards: APITask['finishRewards']): TaskReward[]
   // 物品奖励
   if (finishRewards.items) {
     finishRewards.items.forEach((item) => {
+      const isMoney = item.item.name === CURRENCY_ROUBLES;
       rewards.push({
-        type: item.item.name === '卢布' ? 'money' : 'item',
+        type: isMoney ? 'money' : 'item',
         value: item.count,
-        description: item.item.name === '卢布' 
+        description: isMoney
           ? `${item.count.toLocaleString()} ₽`
           : `${item.item.name} x${item.count}`,
       });

@@ -38,10 +38,11 @@ function layoutTasks(tasks: TaskData[]): TaskNode[] {
   });
   
   // 计算每个任务的层级（深度优先搜索）
-  function getTaskLevel(taskId: string, visited: Set<string> = new Set()): number {
+  function getTaskLevel(taskId: string, visited: Set<string>): number {
+    // 检测循环依赖
     if (visited.has(taskId)) return 0;
-    visited.add(taskId);
     
+    // 如果已计算过，直接返回缓存结果
     if (taskLevelMap.has(taskId)) {
       return taskLevelMap.get(taskId)!;
     }
@@ -49,25 +50,30 @@ function layoutTasks(tasks: TaskData[]): TaskNode[] {
     const task = taskMap.get(taskId);
     if (!task) return 0;
     
+    // 将当前任务加入访问集合
+    visited.add(taskId);
+    
     const prereqTasks = task.unlockRequirements
       .filter((req) => req.type === 'task' && req.taskId)
       .map((req) => req.taskId!);
     
     if (prereqTasks.length === 0) {
       taskLevelMap.set(taskId, 0);
+      visited.delete(taskId);
       return 0;
     }
     
     const maxPrereqLevel = Math.max(
-      ...prereqTasks.map((prereqId) => getTaskLevel(prereqId, new Set(visited)))
+      ...prereqTasks.map((prereqId) => getTaskLevel(prereqId, visited))
     );
     const level = maxPrereqLevel + 1;
     taskLevelMap.set(taskId, level);
+    visited.delete(taskId);
     return level;
   }
   
   // 计算所有任务的层级
-  tasks.forEach((task) => getTaskLevel(task.taskId));
+  tasks.forEach((task) => getTaskLevel(task.taskId, new Set()));
   
   // 按层级分组
   const levelGroups = new Map<number, TaskData[]>();
