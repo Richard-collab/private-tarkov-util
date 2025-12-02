@@ -11,13 +11,12 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * GraphQL 查询 - 获取所有任务数据
  */
-export const tasksQuery = gql`
+const tasksQuery = gql`
 {
     tasks(lang: zh) {
         id
@@ -112,34 +111,20 @@ export const tasksQuery = gql`
 }
 `;
 
-/**
- * 从 tarkov.dev API 获取任务数据
- * @returns {Promise<Object>} API 响应数据
- */
-export async function fetchTasksFromAPI() {
-    return request('https://api.tarkov.dev/graphql', tasksQuery);
-}
-
-// 如果直接运行此脚本，则获取数据并保存到文件
-// 使用更可靠的主模块检测方式
-const currentModulePath = fileURLToPath(import.meta.url);
-// eslint-disable-next-line no-undef
-const isMainModule = typeof process !== 'undefined' && process.argv[1] === currentModulePath;
-if (isMainModule) {
-    fetchTasksFromAPI()
-        .then(async (data) => {
-            console.log('获取到任务数据:', data.tasks.length, '个任务');
-            
-            // 将数据保存为 JSON 文件
-            try {
-                const outputPath = path.join(__dirname, 'tasks.json');
-                await fs.writeFile(outputPath, JSON.stringify(data, null, 2));
-                console.log('数据已保存到', outputPath);
-            } catch (error) {
-                console.error('保存文件时出错:', error);
-            }
-        })
-        .catch((error) => {
-            console.error('请求失败:', error);
-        });
-}
+// 获取任务数据并保存到文件
+request('https://api.tarkov.dev/graphql', tasksQuery)
+    .then(async (data) => {
+        console.log('获取到任务数据:', data.tasks.length, '个任务');
+        
+        // 将数据保存为 JSON 文件
+        try {
+            const outputPath = path.join(__dirname, 'tasks.json');
+            await fs.writeFile(outputPath, JSON.stringify(data, null, 2));
+            console.log('数据已保存到', outputPath);
+        } catch (error) {
+            console.error('保存文件时出错:', error);
+        }
+    })
+    .catch((error) => {
+        console.error('请求失败:', error);
+    });
