@@ -1,0 +1,595 @@
+{
+  "tasks": [
+    {
+      "id": "5936d90786f7742b1420ba5b",
+      "name": "出门行动",
+      "trader": {
+        "id": "54cb50c76803fa8b248b4571",
+        "name": "普拉波",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
+      },
+      "map": null,
+      "minPlayerLevel": 1,
+      "taskRequirements": [],
+      "objectives": [
+        {
+          "id": "5967530e86f77462ba22226d",
+          "type": "extract",
+          "description": "完成任意地图撤离",
+          "optional": false
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "普拉波" },
+            "standing": 0.01
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 25000
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 300
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Debut"
+    },
+    {
+      "id": "5936da9e86f7742d65037edf",
+      "name": "底层挖掘者",
+      "trader": {
+        "id": "54cb50c76803fa8b248b4571",
+        "name": "普拉波",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
+      },
+      "map": {
+        "id": "59fc81d786f774390775787e",
+        "name": "海关"
+      },
+      "minPlayerLevel": 1,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5936d90786f7742b1420ba5b",
+            "name": "出门行动"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5967530e86f77462ba22226e",
+          "type": "find",
+          "description": "在海关的寄存处找到MP-133霰弹枪",
+          "optional": false,
+          "count": 2
+        },
+        {
+          "id": "5967530e86f77462ba22226f",
+          "type": "giveItem",
+          "description": "将找到的霰弹枪交给普拉波",
+          "optional": false,
+          "count": 2
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "普拉波" },
+            "standing": 0.02
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 35000
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 600
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Checking"
+    },
+    {
+      "id": "5936dc5086f77462a6516864",
+      "name": "BP仓库-第一部分",
+      "trader": {
+        "id": "54cb50c76803fa8b248b4571",
+        "name": "普拉波",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
+      },
+      "map": {
+        "id": "59fc81d786f774390775787e",
+        "name": "海关"
+      },
+      "minPlayerLevel": 2,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5936da9e86f7742d65037edf",
+            "name": "底层挖掘者"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5967734786f774631e0c4971",
+          "type": "find",
+          "description": "找到Terragroup的便携式文件袋",
+          "optional": false,
+          "count": 1
+        },
+        {
+          "id": "5967734786f774631e0c4972",
+          "type": "giveItem",
+          "description": "将文件袋交给普拉波",
+          "optional": false,
+          "count": 1
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "普拉波" },
+            "standing": 0.02
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 40000
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 750
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BP_Depot"
+    },
+    {
+      "id": "5967733e86f774602a0c5178",
+      "name": "治疗方法-第一部分",
+      "trader": {
+        "id": "54cb57776803fa99248b456e",
+        "name": "治疗者",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
+      },
+      "map": null,
+      "minPlayerLevel": 1,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5936d90786f7742b1420ba5b",
+            "name": "出门行动"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5967734786f774631e0c4981",
+          "type": "giveItem",
+          "description": "交出2个Salewa急救包给治疗者",
+          "optional": false,
+          "count": 2
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "治疗者" },
+            "standing": 0.03
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 30000
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 500
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shortage"
+    },
+    {
+      "id": "5967734b86f774631e0c4988",
+      "name": "治疗方法-第二部分",
+      "trader": {
+        "id": "54cb57776803fa99248b456e",
+        "name": "治疗者",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
+      },
+      "map": {
+        "id": "56f40101d2720b2a4d8b45d6",
+        "name": "工厂"
+      },
+      "minPlayerLevel": 5,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5967733e86f774602a0c5178",
+            "name": "治疗方法-第一部分"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5967734786f774631e0c4982",
+          "type": "find",
+          "description": "在工厂找到医疗箱",
+          "optional": false,
+          "count": 1
+        },
+        {
+          "id": "5967734786f774631e0c4983",
+          "type": "giveItem",
+          "description": "将医疗箱交给治疗者",
+          "optional": false,
+          "count": 1
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "治疗者" },
+            "standing": 0.03
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 55000
+          },
+          {
+            "item": { "name": "Grizzly急救包" },
+            "count": 1
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 800
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Sanitary_Standards"
+    },
+    {
+      "id": "5969f90786f77420d2328015",
+      "name": "供给商",
+      "trader": {
+        "id": "54cb50c76803fa8b248b4571",
+        "name": "普拉波",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
+      },
+      "map": {
+        "id": "56f40101d2720b2a4d8b45d6",
+        "name": "工厂"
+      },
+      "minPlayerLevel": 3,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5936da9e86f7742d65037edf",
+            "name": "底层挖掘者"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5969f92086f774201d7e9b9a",
+          "type": "shoot",
+          "description": "在工厂击杀5名Scav",
+          "optional": false,
+          "count": 5
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "普拉波" },
+            "standing": 0.02
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 45000
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 700
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Supplier"
+    },
+    {
+      "id": "5979f876d2720a4e5211f6a9",
+      "name": "战地药物-第一部分",
+      "trader": {
+        "id": "5a7c2ebb46aef81a7ca2145f",
+        "name": "治疗者",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
+      },
+      "map": null,
+      "minPlayerLevel": 10,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5967734b86f774631e0c4988",
+            "name": "治疗方法-第二部分"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5979f87ad2720a4e5311f6a1",
+          "type": "giveItem",
+          "description": "交出3个止痛药",
+          "optional": false,
+          "count": 3
+        },
+        {
+          "id": "5979f87ad2720a4e5311f6a2",
+          "type": "giveItem",
+          "description": "交出3个绷带",
+          "optional": false,
+          "count": 3
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "治疗者" },
+            "standing": 0.04
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 70000
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 1200
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Painkiller"
+    },
+    {
+      "id": "596b455186f77457cb50eccb",
+      "name": "操作水泵",
+      "trader": {
+        "id": "58330581ace78e27b8b10cee",
+        "name": "斯卡尔",
+        "imageLink": "https://assets.tarkov.dev/portrait-5c0647fdd443bc2504c2d371-skier.webp"
+      },
+      "map": {
+        "id": "59fc81d786f774390775787e",
+        "name": "海关"
+      },
+      "minPlayerLevel": 5,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5936d90786f7742b1420ba5b",
+            "name": "出门行动"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "596b455586f77457cb50eccc",
+          "type": "visit",
+          "description": "找到操作水泵的房间",
+          "optional": false
+        },
+        {
+          "id": "596b455586f77457cb50eccd",
+          "type": "plantItem",
+          "description": "在水泵处放置一个标记",
+          "optional": false,
+          "count": 1
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "斯卡尔" },
+            "standing": 0.03
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 50000
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 900
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Operation_Aquarius"
+    },
+    {
+      "id": "5979eee086f774311953e0d4",
+      "name": "药物-第一部分",
+      "trader": {
+        "id": "54cb57776803fa99248b456e",
+        "name": "治疗者",
+        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
+      },
+      "map": {
+        "id": "59fc81d786f774390775787e",
+        "name": "海关"
+      },
+      "minPlayerLevel": 8,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "596b455186f77457cb50eccb",
+            "name": "操作水泵"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5979eee686f774311953e0d5",
+          "type": "find",
+          "description": "在医院找到医疗用品",
+          "optional": false,
+          "count": 1
+        },
+        {
+          "id": "5979eee686f774311953e0d6",
+          "type": "giveItem",
+          "description": "将医疗用品交给治疗者",
+          "optional": false,
+          "count": 1
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "治疗者" },
+            "standing": 0.04
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 75000
+          }
+        ],
+        "offerUnlock": [
+          {
+            "trader": { "name": "治疗者" },
+            "item": { "name": "高级急救包" }
+          }
+        ],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 1100
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pharmacist"
+    },
+    {
+      "id": "5979f0b286f77426d702a0f2",
+      "name": "交易员",
+      "trader": {
+        "id": "5935c25fb3acc3127c3d8cd9",
+        "name": "商人",
+        "imageLink": "https://assets.tarkov.dev/portrait-5ac3b934156ae10c4430e83c-ragman.webp"
+      },
+      "map": null,
+      "minPlayerLevel": 10,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5979eee086f774311953e0d4",
+            "name": "药物-第一部分"
+          }
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5979f0b686f77426d702a0f3",
+          "type": "giveItem",
+          "description": "交出5个肥皂",
+          "optional": false,
+          "count": 5
+        },
+        {
+          "id": "5979f0b686f77426d702a0f4",
+          "type": "giveItem",
+          "description": "交出2个打火机",
+          "optional": true,
+          "count": 2
+        }
+      ],
+      "startRewards": {
+        "traderStanding": [],
+        "items": []
+      },
+      "finishRewards": {
+        "traderStanding": [
+          {
+            "trader": { "name": "商人" },
+            "standing": 0.05
+          }
+        ],
+        "items": [
+          {
+            "item": { "name": "卢布" },
+            "count": 100000
+          },
+          {
+            "item": { "name": "MBSS背包" },
+            "count": 1
+          }
+        ],
+        "offerUnlock": [],
+        "craftUnlock": [],
+        "skillLevelReward": [],
+        "traderUnlock": [],
+        "experience": 1500
+      },
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Trading"
+    }
+  ]
+}
