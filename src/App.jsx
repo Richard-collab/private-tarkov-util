@@ -19,6 +19,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import PriceQuery from './pages/PriceQuery';
+import TaskFlowDemo from './pages/TaskFlowDemo';
 
 // 侧边栏宽度常量
 const DRAWER_WIDTH = 240;
@@ -128,6 +129,8 @@ function App() {
               <Route path="/" element={<Home />} />
               {/* 物价查询页面路由 */}
               <Route path="/price-query" element={<PriceQuery />} />
+              {/* 任务流程页面路由 */}
+              <Route path="/task-flow" element={<TaskFlowDemo />} />
             </Routes>
           </Box>
         </Box>
