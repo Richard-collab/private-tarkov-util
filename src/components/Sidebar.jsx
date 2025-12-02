@@ -27,6 +27,7 @@ import {
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -51,6 +52,11 @@ const menuItems = [
     text: '物价查询',
     icon: <SearchIcon />,
     path: '/price-query',
+  },
+  {
+    text: '任务流程',
+    icon: <AccountTreeIcon />,
+    path: '/task-flow',
   },
 ];
 
