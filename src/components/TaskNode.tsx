@@ -170,7 +170,6 @@ function TaskNodeComponent({ data, selected }: TaskNodeProps) {
                       primaryTypographyProps={{ 
                         variant: 'body2',
                         sx: { 
-                          textDecoration: objective.optional ? 'none' : 'none',
                           color: objective.optional ? 'text.secondary' : 'text.primary'
                         }
                       }}
