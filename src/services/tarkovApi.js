@@ -27,7 +27,7 @@ const withTimeout = (promise, timeout) => {
 };
 
 /**
- * 获取所有武器列表
+ * 获取所有武器列表（只返回可改装的武器，即有槽位的武器）
  */
 export const fetchWeapons = async () => {
   const query = gql`
@@ -51,6 +51,10 @@ export const fetchWeapons = async () => {
             ergonomics
             recoilVertical
             recoilHorizontal
+            slots {
+              id
+              name
+            }
           }
         }
       }
@@ -59,7 +63,11 @@ export const fetchWeapons = async () => {
 
   try {
     const data = await withTimeout(request(API_URL, query), REQUEST_TIMEOUT);
-    return data.items;
+    // 过滤出有槽位的武器（可改装的武器）
+    const modifiableWeapons = data.items.filter(
+      (weapon) => weapon.properties?.slots && weapon.properties.slots.length > 0
+    );
+    return modifiableWeapons;
   } catch (error) {
     console.warn('API请求失败，使用本地缓存数据:', error.message);
     // 动态导入本地缓存数据
