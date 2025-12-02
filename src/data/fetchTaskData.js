@@ -15,116 +15,128 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * GraphQL 查询 - 获取所有任务数据
+ * 已移除在当前 schema 中不存在的字段：
+ *  - TaskObjectiveBasic.count
+ *  - TaskRewards.experience
  */
 const tasksQuery = gql`
 {
-    tasks(lang: zh) {
+  tasks(lang: zh) {
+    id
+    name
+    trader {
+      id
+      name
+      imageLink
+    }
+    map {
+      id
+      name
+    }
+    minPlayerLevel
+    taskRequirements {
+      task {
         id
         name
-        trader {
-            id
-            name
-            imageLink
-        }
-        map {
-            id
-            name
-        }
-        minPlayerLevel
-        taskRequirements {
-            task {
-                id
-                name
-            }
-        }
-        objectives {
-            id
-            type
-            description
-            optional
-            ... on TaskObjectiveItem {
-                count
-                item {
-                    id
-                    name
-                }
-            }
-            ... on TaskObjectiveShoot {
-                count
-                targetNames
-            }
-            ... on TaskObjectiveBasic {
-                count
-            }
-        }
-        startRewards {
-            traderStanding {
-                trader {
-                    name
-                }
-                standing
-            }
-            items {
-                item {
-                    name
-                }
-                count
-            }
-        }
-        finishRewards {
-            traderStanding {
-                trader {
-                    name
-                }
-                standing
-            }
-            items {
-                item {
-                    name
-                }
-                count
-            }
-            offerUnlock {
-                trader {
-                    name
-                }
-                item {
-                    name
-                }
-            }
-            craftUnlock {
-                station {
-                    name
-                }
-            }
-            skillLevelReward {
-                name
-                level
-            }
-            traderUnlock {
-                name
-            }
-            experience
-        }
-        wikiLink
+      }
     }
+    objectives {
+      id
+      type
+      description
+      optional
+      ... on TaskObjectiveItem {
+        count
+        item {
+          id
+          name
+        }
+      }
+      ... on TaskObjectiveShoot {
+        count
+        targetNames
+      }
+      # TaskObjectiveBasic 没有额外字段，保留通用字段即可
+    }
+    startRewards {
+      traderStanding {
+        trader {
+          name
+        }
+        standing
+      }
+      items {
+        item {
+          name
+        }
+        count
+      }
+    }
+    finishRewards {
+      traderStanding {
+        trader {
+          name
+        }
+        standing
+      }
+      items {
+        item {
+          name
+        }
+        count
+      }
+      offerUnlock {
+        trader {
+          name
+        }
+        item {
+          name
+        }
+      }
+      craftUnlock {
+        station {
+          name
+        }
+      }
+      skillLevelReward {
+        name
+        level
+      }
+      traderUnlock {
+        name
+      }
+      # 注意：原查询中使用的 experience 字段在当前 schema 中不存在，已移除
+    }
+    wikiLink
+  }
 }
 `;
 
-// 获取任务数据并保存到文件
-request('https://api.tarkov.dev/graphql', tasksQuery)
-    .then(async (data) => {
-        console.log('获取到任务数据:', data.tasks.length, '个任务');
-        
-        // 将数据保存为 JSON 文件
-        try {
-            const outputPath = path.join(__dirname, 'tasks.json');
-            await fs.writeFile(outputPath, JSON.stringify(data, null, 2));
-            console.log('数据已保存到', outputPath);
-        } catch (error) {
-            console.error('保存文件时出错:', error);
-        }
-    })
-    .catch((error) => {
-        console.error('请求失败:', error);
-    });
+// 使用 async/await，更清晰的错误处理
+async function fetchAndSaveTasks() {
+  try {
+    const data = await request('https://api.tarkov.dev/graphql', tasksQuery);
+
+    if (!data || !Array.isArray(data.tasks)) {
+      console.error('返回的数据格式不符合预期:', data);
+      return;
+    }
+
+    console.log('获取到任务数据:', data.tasks.length, '个任务');
+
+    const outputPath = path.join(__dirname, 'tasks.json');
+    await fs.writeFile(outputPath, JSON.stringify(data, null, 2));
+    console.log('数据已保存到', outputPath);
+  } catch (error) {
+    // 更详细的错误输出，尤其是 GraphQL validation errors
+    if (error.response && error.response.errors) {
+      console.error('GraphQL 返回错误:');
+      console.error(JSON.stringify(error.response.errors, null, 2));
+    } else {
+      console.error('请求或保存时发生错误:', error);
+    }
+    process.exitCode = 1;
+  }
+}
+
+fetchAndSaveTasks();
