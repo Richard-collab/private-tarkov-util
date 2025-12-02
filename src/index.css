@@ -75,6 +75,23 @@ button:focus-visible {
   filter: grayscale(50%);
 }
 
+/* Task Node Highlight Animation */
+@keyframes task-node-highlight-flash {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(25, 118, 210, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 8px rgba(25, 118, 210, 0.6);
+  }
+}
+
+.task-node-highlight .task-node,
+.react-flow__node.task-node-highlight .task-node {
+  animation: task-node-highlight-flash 0.75s ease-in-out 2;
+  border-color: #1976d2 !important;
+  box-shadow: 0 0 20px 4px rgba(25, 118, 210, 0.4);
+}
+
 /* React Flow customizations */
 .react-flow__node-taskLite {
   cursor: pointer;

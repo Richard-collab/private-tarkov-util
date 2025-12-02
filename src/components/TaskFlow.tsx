@@ -6,6 +6,8 @@
  * - 支持商人过滤和搜索匹配状态
  * - 初始加载时自动聚焦到起始节点
  * - 使用轻量级节点组件提升性能
+ * - 支持按奖励物品搜索任务
+ * - 支持点击节点跳转并高亮
  */
 
 import { useCallback, useMemo, useEffect, useRef } from 'react';
@@ -25,6 +27,8 @@ import TaskNodeLiteComponent from './TaskNodeLite';
 import type { TaskNodeData } from './TaskNodeLite';
 import { getLayoutedElements, findStartNodeId, NODE_WIDTH, NODE_HEIGHT } from '../utils/layoutUtils';
 import { useTaskView } from '../context/TaskViewContext';
+import { panToNodeAndHighlight } from '../utils/viewport';
+import { isTaskMatchedCombined } from '../utils/search';
 import type { TaskData } from '../types/Task';
 
 /**
@@ -49,32 +53,6 @@ const nodeTypes: NodeTypes = {
 };
 
 /**
- * 检查任务是否匹配过滤条件
- */
-function isTaskMatched(
-  task: TaskData,
-  merchantFilter: string | null,
-  searchTerm: string
-): boolean {
-  // 商人过滤
-  if (merchantFilter && task.trader.name !== merchantFilter) {
-    return false;
-  }
-
-  // 搜索过滤
-  if (searchTerm) {
-    const lowerSearch = searchTerm.toLowerCase();
-    const matchesName = task.taskName.toLowerCase().includes(lowerSearch);
-    const matchesMerchant = task.trader.name.toLowerCase().includes(lowerSearch);
-    if (!matchesName && !matchesMerchant) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-/**
  * TaskFlow 组件
  */
 export default function TaskFlow({
@@ -83,14 +61,19 @@ export default function TaskFlow({
   startNodeId,
   onNodeClick,
 }: TaskFlowProps) {
-  const { merchantFilter, searchTerm } = useTaskView();
+  const { merchantFilter, searchTerm, rewardSearchTerm, focusTaskId, setFocusTaskId } = useTaskView();
   const reactFlowInstance = useRef<ReactFlowInstance | null>(null);
   const hasInitialized = useRef(false);
 
   // 处理节点，添加匹配状态和转换为轻量级节点类型
   const processedNodes = useMemo(() => {
     return rawNodes.map((node) => {
-      const matched = isTaskMatched(node.data, merchantFilter, searchTerm);
+      const matched = isTaskMatchedCombined(
+        node.data,
+        searchTerm,
+        rewardSearchTerm,
+        merchantFilter
+      );
       return {
         ...node,
         type: 'taskLite',
@@ -100,7 +83,7 @@ export default function TaskFlow({
         } as TaskNodeData,
       };
     });
-  }, [rawNodes, merchantFilter, searchTerm]);
+  }, [rawNodes, merchantFilter, searchTerm, rewardSearchTerm]);
 
   // 处理边，根据源和目标节点的匹配状态设置样式
   const processedEdges = useMemo(() => {
@@ -179,20 +162,31 @@ export default function TaskFlow({
 
   // 搜索时聚焦到第一个匹配的节点
   useEffect(() => {
-    if (!reactFlowInstance.current || !searchTerm) return;
+    if (!reactFlowInstance.current || (!searchTerm && !rewardSearchTerm)) return;
 
     const firstMatchedNode = processedNodes.find((node) => node.data.matched);
     if (firstMatchedNode) {
-      const node = reactFlowInstance.current.getNode(firstMatchedNode.id);
-      if (node) {
-        reactFlowInstance.current.setCenter(
-          node.position.x + 160,
-          node.position.y + 50,
-          { zoom: 1.5, duration: 300 }
-        );
-      }
+      panToNodeAndHighlight(
+        reactFlowInstance.current,
+        firstMatchedNode.id,
+        { zoom: 1.5, duration: 300, nodeWidth: NODE_WIDTH, nodeHeight: NODE_HEIGHT }
+      );
     }
-  }, [searchTerm, processedNodes]);
+  }, [searchTerm, rewardSearchTerm, processedNodes]);
+
+  // 响应 focusTaskId 变化，跳转并高亮对应节点
+  useEffect(() => {
+    if (!reactFlowInstance.current || !focusTaskId) return;
+
+    panToNodeAndHighlight(
+      reactFlowInstance.current,
+      focusTaskId,
+      { zoom: 1.5, duration: 300, nodeWidth: NODE_WIDTH, nodeHeight: NODE_HEIGHT }
+    );
+
+    // 清除 focusTaskId 以便下次可以再次触发跳转
+    setFocusTaskId(null);
+  }, [focusTaskId, setFocusTaskId]);
 
   // 节点点击处理
   const handleNodeClick = useCallback(

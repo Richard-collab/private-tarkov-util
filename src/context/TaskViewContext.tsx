@@ -21,6 +21,18 @@ interface TaskViewContextValue {
   searchTerm: string;
   /** 设置搜索词 */
   setSearchTerm: (term: string) => void;
+  /** 奖励搜索词 */
+  rewardSearchTerm: string;
+  /** 设置奖励搜索词 */
+  setRewardSearchTerm: (term: string) => void;
+  /** 当前选中的任务ID */
+  selectedTaskId: string | null;
+  /** 设置选中的任务ID */
+  setSelectedTaskId: (taskId: string | null) => void;
+  /** 需要跳转到的任务ID（用于触发视口跳转） */
+  focusTaskId: string | null;
+  /** 设置需要跳转到的任务ID */
+  setFocusTaskId: (taskId: string | null) => void;
   /** 清除所有过滤器 */
   clearFilters: () => void;
 }
@@ -45,10 +57,14 @@ interface TaskViewProviderProps {
 export function TaskViewProvider({ children }: TaskViewProviderProps) {
   const [merchantFilter, setMerchantFilter] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [rewardSearchTerm, setRewardSearchTerm] = useState<string>('');
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [focusTaskId, setFocusTaskId] = useState<string | null>(null);
 
   const clearFilters = useCallback(() => {
     setMerchantFilter(null);
     setSearchTerm('');
+    setRewardSearchTerm('');
   }, []);
 
   const value = useMemo<TaskViewContextValue>(() => ({
@@ -56,8 +72,14 @@ export function TaskViewProvider({ children }: TaskViewProviderProps) {
     setMerchantFilter,
     searchTerm,
     setSearchTerm,
+    rewardSearchTerm,
+    setRewardSearchTerm,
+    selectedTaskId,
+    setSelectedTaskId,
+    focusTaskId,
+    setFocusTaskId,
     clearFilters,
-  }), [merchantFilter, searchTerm, clearFilters]);
+  }), [merchantFilter, searchTerm, rewardSearchTerm, selectedTaskId, focusTaskId, clearFilters]);
 
   return (
     <TaskViewContext.Provider value={value}>

@@ -10,18 +10,24 @@
  * - 使用 react-window 虚拟化任务列表
  * - 使用 Context 管理过滤状态
  * - 防抖搜索避免频繁重渲染
+ * 
+ * 功能特性:
+ * - 单击任务节点显示详情面板
+ * - 支持按奖励物品搜索任务
+ * - 搜索后自动跳转到匹配节点
  */
 
 import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
-import { Box, Typography, Paper, Divider } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 import type { Node, Edge } from '@xyflow/react';
 
-import { TaskViewProvider } from '../context/TaskViewContext';
+import { TaskViewProvider, useTaskView } from '../context/TaskViewContext';
 import TaskFlow from '../components/TaskFlow';
 import TaskListVirtual from '../components/TaskListVirtual';
 import MerchantFilter from '../components/MerchantFilter';
 import TaskSearchBar from '../components/TaskSearchBar';
-import { taskDataArray, getRootTasks } from '../data/TaskData';
+import TaskDetailPanel from '../components/TaskDetailPanel';
+import { taskDataArray, getRootTasks, getTaskById } from '../data/TaskData';
 import type { TaskData } from '../types/Task';
 
 /**
@@ -70,7 +76,9 @@ function generateEdges(tasks: TaskData[]): Edge[] {
  * 与 TaskViewContext 分离以便在 Provider 内部使用 hooks
  */
 function TaskFlowDemoContent() {
-  const [selectedTask, setSelectedTask] = useState<string | null>(null);
+  const { setFocusTaskId, setSelectedTaskId, selectedTaskId } = useTaskView();
+  const [detailPanelOpen, setDetailPanelOpen] = useState(false);
+  const [selectedTaskData, setSelectedTaskData] = useState<TaskData | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [listDimensions, setListDimensions] = useState({ width: 320, height: 600 });
 
@@ -86,22 +94,53 @@ function TaskFlowDemoContent() {
 
   // 获取选中的任务名称
   const selectedTaskName = useMemo(() => {
-    if (!selectedTask) return null;
-    const task = taskDataArray.find((t) => t.taskId === selectedTask);
-    return task?.taskName || selectedTask;
-  }, [selectedTask]);
+    if (!selectedTaskId) return null;
+    const task = taskDataArray.find((t) => t.taskId === selectedTaskId);
+    return task?.taskName || selectedTaskId;
+  }, [selectedTaskId]);
 
-  // 处理节点点击
+  // 处理节点点击 - 打开详情面板
   const handleNodeClick = useCallback((nodeId: string, task: TaskData) => {
-    setSelectedTask(nodeId);
-  }, []);
+    setSelectedTaskId(nodeId);
+    setSelectedTaskData(task);
+    setDetailPanelOpen(true);
+  }, [setSelectedTaskId]);
 
   // 处理列表任务点击
   const handleTaskListClick = useCallback((taskId: string) => {
-    setSelectedTask(taskId);
-    // 注意：实际聚焦到节点由 TaskFlow 组件的 searchTerm 变化触发
-    // 这里可以通过 context 或其他方式触发聚焦
+    const task = getTaskById(taskId);
+    setSelectedTaskId(taskId);
+    setFocusTaskId(taskId);
+    if (task) {
+      setSelectedTaskData(task);
+      setDetailPanelOpen(true);
+    }
+  }, [setSelectedTaskId, setFocusTaskId]);
+
+  // 关闭详情面板
+  const handleDetailPanelClose = useCallback(() => {
+    setDetailPanelOpen(false);
   }, []);
+
+  // 处理后续/前置任务点击 - 跳转到对应节点
+  const handleRelatedTaskClick = useCallback((taskId: string) => {
+    const task = getTaskById(taskId);
+    setSelectedTaskId(taskId);
+    setFocusTaskId(taskId);
+    if (task) {
+      setSelectedTaskData(task);
+    }
+  }, [setSelectedTaskId, setFocusTaskId]);
+
+  // 处理搜索结果点击
+  const handleSearchResultClick = useCallback((taskId: string) => {
+    const task = getTaskById(taskId);
+    setSelectedTaskId(taskId);
+    if (task) {
+      setSelectedTaskData(task);
+      setDetailPanelOpen(true);
+    }
+  }, [setSelectedTaskId]);
 
   // 监听容器大小变化以更新列表尺寸
   useEffect(() => {
@@ -158,7 +197,11 @@ function TaskFlowDemoContent() {
           {/* 过滤器和搜索框 */}
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
             <MerchantFilter tasks={taskDataArray} width={180} />
-            <TaskSearchBar width={240} />
+            <TaskSearchBar
+              tasks={taskDataArray}
+              width={280}
+              onResultClick={handleSearchResultClick}
+            />
           </Box>
         </Box>
       </Paper>
@@ -180,7 +223,7 @@ function TaskFlowDemoContent() {
             height={listDimensions.height}
             width={listDimensions.width}
             onTaskClick={handleTaskListClick}
-            selectedTaskId={selectedTask}
+            selectedTaskId={selectedTaskId}
           />
         </Paper>
 
@@ -194,6 +237,15 @@ function TaskFlowDemoContent() {
           />
         </Paper>
       </Box>
+
+      {/* 任务详情面板 */}
+      <TaskDetailPanel
+        open={detailPanelOpen}
+        onClose={handleDetailPanelClose}
+        task={selectedTaskData}
+        onFollowUpTaskClick={handleRelatedTaskClick}
+        onPrerequisiteTaskClick={handleRelatedTaskClick}
+      />
     </Box>
   );
 }

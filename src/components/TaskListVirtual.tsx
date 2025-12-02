@@ -11,6 +11,7 @@ import { Box, Typography, Avatar, Chip } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import type { TaskData } from '../types/Task';
 import { useTaskView } from '../context/TaskViewContext';
+import { isTaskMatchedCombined } from '../utils/search';
 
 /**
  * TaskListVirtual Props
@@ -36,28 +37,6 @@ interface TaskRowData {
   matchedTaskIds: Set<string>;
   onTaskClick?: (taskId: string) => void;
   selectedTaskId?: string | null;
-}
-
-/**
- * 检查任务是否匹配过滤条件
- */
-function isTaskMatched(
-  task: TaskData,
-  merchantFilter: string | null,
-  searchTerm: string
-): boolean {
-  if (merchantFilter && task.trader.name !== merchantFilter) {
-    return false;
-  }
-  if (searchTerm) {
-    const lowerSearch = searchTerm.toLowerCase();
-    const matchesName = task.taskName.toLowerCase().includes(lowerSearch);
-    const matchesMerchant = task.trader.name.toLowerCase().includes(lowerSearch);
-    if (!matchesName && !matchesMerchant) {
-      return false;
-    }
-  }
-  return true;
 }
 
 /**
@@ -166,18 +145,18 @@ export default function TaskListVirtual({
   onTaskClick,
   selectedTaskId,
 }: TaskListVirtualProps) {
-  const { merchantFilter, searchTerm } = useTaskView();
+  const { merchantFilter, searchTerm, rewardSearchTerm } = useTaskView();
 
   // 计算匹配的任务ID集合
   const matchedTaskIds = useMemo(() => {
     const matched = new Set<string>();
     tasks.forEach((task) => {
-      if (isTaskMatched(task, merchantFilter, searchTerm)) {
+      if (isTaskMatchedCombined(task, searchTerm, rewardSearchTerm, merchantFilter)) {
         matched.add(task.taskId);
       }
     });
     return matched;
-  }, [tasks, merchantFilter, searchTerm]);
+  }, [tasks, merchantFilter, searchTerm, rewardSearchTerm]);
 
   // 统计匹配数量
   const matchedCount = matchedTaskIds.size;
