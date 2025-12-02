@@ -3,593 +3,497 @@
     {
       "id": "5936d90786f7742b1420ba5b",
       "name": "出门行动",
-      "trader": {
-        "id": "54cb50c76803fa8b248b4571",
-        "name": "普拉波",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
-      },
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
       "map": null,
       "minPlayerLevel": 1,
       "taskRequirements": [],
-      "objectives": [
-        {
-          "id": "5967530e86f77462ba22226d",
-          "type": "extract",
-          "description": "完成任意地图撤离",
-          "optional": false
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "普拉波" },
-            "standing": 0.01
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 25000
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 300
-      },
+      "objectives": [{"id": "obj-debut-1", "type": "extract", "description": "完成任意地图撤离", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.01}], "items": [{"item": {"name": "卢布"}, "count": 25000}], "experience": 300},
       "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Debut"
     },
     {
       "id": "5936da9e86f7742d65037edf",
       "name": "底层挖掘者",
-      "trader": {
-        "id": "54cb50c76803fa8b248b4571",
-        "name": "普拉波",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
-      },
-      "map": {
-        "id": "59fc81d786f774390775787e",
-        "name": "海关"
-      },
-      "minPlayerLevel": 1,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5936d90786f7742b1420ba5b",
-            "name": "出门行动"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5967530e86f77462ba22226e",
-          "type": "find",
-          "description": "在海关的寄存处找到MP-133霰弹枪",
-          "optional": false,
-          "count": 2
-        },
-        {
-          "id": "5967530e86f77462ba22226f",
-          "type": "giveItem",
-          "description": "将找到的霰弹枪交给普拉波",
-          "optional": false,
-          "count": 2
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "普拉波" },
-            "standing": 0.02
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 35000
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 600
-      },
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 2,
+      "taskRequirements": [{"task": {"id": "5936d90786f7742b1420ba5b", "name": "出门行动"}}],
+      "objectives": [{"id": "obj-check-1", "type": "find", "description": "在海关找到怀表", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 35000}], "experience": 1800},
       "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Checking"
     },
     {
-      "id": "5936dc5086f77462a6516864",
-      "name": "BP仓库-第一部分",
-      "trader": {
-        "id": "54cb50c76803fa8b248b4571",
-        "name": "普拉波",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
-      },
-      "map": {
-        "id": "59fc81d786f774390775787e",
-        "name": "海关"
-      },
-      "minPlayerLevel": 2,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5936da9e86f7742d65037edf",
-            "name": "底层挖掘者"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5967734786f774631e0c4971",
-          "type": "find",
-          "description": "找到Terragroup的便携式文件袋",
-          "optional": false,
-          "count": 1
-        },
-        {
-          "id": "5967734786f774631e0c4972",
-          "type": "giveItem",
-          "description": "将文件袋交给普拉波",
-          "optional": false,
-          "count": 1
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "普拉波" },
-            "standing": 0.02
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 40000
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 750
-      },
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BP_Depot"
+      "id": "59674cd986f7744ab26e32f2",
+      "name": "射击野餐",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": {"id": "woods", "name": "森林"},
+      "minPlayerLevel": 3,
+      "taskRequirements": [{"task": {"id": "5936da9e86f7742d65037edf", "name": "底层挖掘者"}}],
+      "objectives": [{"id": "obj-picnic-1", "type": "kill", "description": "在森林击杀15名Scav", "optional": false, "count": 15}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 40000}], "experience": 2000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shootout_Picnic"
+    },
+    {
+      "id": "59674eb386f774539f14813a",
+      "name": "来自过去的邮件",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 5,
+      "taskRequirements": [{"task": {"id": "5936da9e86f7742d65037edf", "name": "底层挖掘者"}}],
+      "objectives": [{"id": "obj-delivery-1", "type": "find", "description": "在海关找到安全文件", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 50000}], "experience": 4000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Delivery_from_the_past"
+    },
+    {
+      "id": "59c124d686f774189b3c843f",
+      "name": "BP仓库",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 5,
+      "taskRequirements": [{"task": {"id": "59674eb386f774539f14813a", "name": "来自过去的邮件"}}],
+      "objectives": [{"id": "obj-bp-1", "type": "mark", "description": "在海关标记4个油罐车", "optional": false, "count": 4}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 45000}], "experience": 2800},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BP_depot"
+    },
+    {
+      "id": "5967530a86f77462ba22226b",
+      "name": "黑幕证据",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 6,
+      "taskRequirements": [{"task": {"id": "59c124d686f774189b3c843f", "name": "BP仓库"}}],
+      "objectives": [{"id": "obj-bad-1", "type": "find", "description": "在海关找到文件袋", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 55000}], "experience": 4100},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Bad_rep_evidence"
+    },
+    {
+      "id": "59675d6c86f7740a842fc482",
+      "name": "冰淇淋锥",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": null,
+      "minPlayerLevel": 9,
+      "taskRequirements": [{"task": {"id": "5967530a86f77462ba22226b", "name": "黑幕证据"}}],
+      "objectives": [{"id": "obj-ice-1", "type": "find", "description": "找到AK-74N突击步枪", "optional": false, "count": 3}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.02}], "items": [{"item": {"name": "卢布"}, "count": 60000}], "experience": 5200},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Ice_cream_cones"
+    },
+    {
+      "id": "59675ea386f77414b32bded2",
+      "name": "邮差帕特",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": {"id": "factory", "name": "工厂"},
+      "minPlayerLevel": 10,
+      "taskRequirements": [{"task": {"id": "59675d6c86f7740a842fc482", "name": "冰淇淋锥"}}],
+      "objectives": [{"id": "obj-postman-1", "type": "find", "description": "在工厂找到密封信件", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.02}], "items": [{"item": {"name": "卢布"}, "count": 65000}], "experience": 5900},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Postman_Pat"
+    },
+    {
+      "id": "5967725e86f774601a446662",
+      "name": "动摇出纳员",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 10,
+      "taskRequirements": [{"task": {"id": "59675d6c86f7740a842fc482", "name": "冰淇淋锥"}}],
+      "objectives": [{"id": "obj-shaking-1", "type": "find", "description": "在海关找到银行箱子", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.02}], "items": [{"item": {"name": "卢布"}, "count": 70000}], "experience": 5900},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shaking_up_teller"
+    },
+    {
+      "id": "596760e186f7741e11214d58",
+      "name": "完美调解人",
+      "trader": {"id": "54cb50c76803fa8b248b4571", "name": "普拉波", "imageLink": "https://assets.tarkov.dev/portrait-prapor.webp"},
+      "map": null,
+      "minPlayerLevel": 35,
+      "taskRequirements": [{"task": {"id": "5967725e86f774601a446662", "name": "动摇出纳员"}}],
+      "objectives": [{"id": "obj-perfect-1", "type": "reputation", "description": "与所有商人达到4级声望", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "普拉波"}, "standing": 0.02}], "items": [{"item": {"name": "卢布"}, "count": 200000}], "experience": 20900},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Perfect_mediator"
     },
     {
       "id": "5967733e86f774602a0c5178",
       "name": "治疗方法-第一部分",
-      "trader": {
-        "id": "54cb57776803fa99248b456e",
-        "name": "治疗者",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
-      },
+      "trader": {"id": "54cb57776803fa99248b456e", "name": "治疗者", "imageLink": "https://assets.tarkov.dev/portrait-therapist.webp"},
       "map": null,
       "minPlayerLevel": 1,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5936d90786f7742b1420ba5b",
-            "name": "出门行动"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5967734786f774631e0c4981",
-          "type": "giveItem",
-          "description": "交出2个Salewa急救包给治疗者",
-          "optional": false,
-          "count": 2
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "治疗者" },
-            "standing": 0.03
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 30000
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 500
-      },
+      "taskRequirements": [{"task": {"id": "5936d90786f7742b1420ba5b", "name": "出门行动"}}],
+      "objectives": [{"id": "obj-shortage-1", "type": "giveItem", "description": "交出2个Salewa急救包给治疗者", "optional": false, "count": 2}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "治疗者"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 30000}], "experience": 500},
       "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shortage"
     },
     {
       "id": "5967734b86f774631e0c4988",
       "name": "治疗方法-第二部分",
-      "trader": {
-        "id": "54cb57776803fa99248b456e",
-        "name": "治疗者",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
-      },
-      "map": {
-        "id": "56f40101d2720b2a4d8b45d6",
-        "name": "工厂"
-      },
+      "trader": {"id": "54cb57776803fa99248b456e", "name": "治疗者", "imageLink": "https://assets.tarkov.dev/portrait-therapist.webp"},
+      "map": {"id": "factory", "name": "工厂"},
       "minPlayerLevel": 5,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5967733e86f774602a0c5178",
-            "name": "治疗方法-第一部分"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5967734786f774631e0c4982",
-          "type": "find",
-          "description": "在工厂找到医疗箱",
-          "optional": false,
-          "count": 1
-        },
-        {
-          "id": "5967734786f774631e0c4983",
-          "type": "giveItem",
-          "description": "将医疗箱交给治疗者",
-          "optional": false,
-          "count": 1
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "治疗者" },
-            "standing": 0.03
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 55000
-          },
-          {
-            "item": { "name": "Grizzly急救包" },
-            "count": 1
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 800
-      },
+      "taskRequirements": [{"task": {"id": "5967733e86f774602a0c5178", "name": "治疗方法-第一部分"}}],
+      "objectives": [{"id": "obj-sanitary-1", "type": "find", "description": "在工厂找到医疗箱", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "治疗者"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 55000}, {"item": {"name": "Grizzly急救包"}, "count": 1}], "experience": 800},
       "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Sanitary_Standards"
     },
     {
-      "id": "5969f90786f77420d2328015",
-      "name": "供给商",
-      "trader": {
-        "id": "54cb50c76803fa8b248b4571",
-        "name": "普拉波",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2eca46aef81a7ca2145d-prapor.webp"
-      },
-      "map": {
-        "id": "56f40101d2720b2a4d8b45d6",
-        "name": "工厂"
-      },
-      "minPlayerLevel": 3,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5936da9e86f7742d65037edf",
-            "name": "底层挖掘者"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5969f92086f774201d7e9b9a",
-          "type": "shoot",
-          "description": "在工厂击杀5名Scav",
-          "optional": false,
-          "count": 5
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "普拉波" },
-            "standing": 0.02
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 45000
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 700
-      },
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Supplier"
+      "id": "596a0e1686f7742723233f18",
+      "name": "药剂师",
+      "trader": {"id": "54cb57776803fa99248b456e", "name": "治疗者", "imageLink": "https://assets.tarkov.dev/portrait-therapist.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 10,
+      "taskRequirements": [{"task": {"id": "5967734b86f774631e0c4988", "name": "治疗方法-第二部分"}}],
+      "objectives": [{"id": "obj-pharmacist-1", "type": "find", "description": "在海关找到药物文件", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "治疗者"}, "standing": 0.04}], "items": [{"item": {"name": "卢布"}, "count": 75000}], "experience": 3600},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pharmacist"
     },
     {
-      "id": "5979f876d2720a4e5211f6a9",
-      "name": "战地药物-第一部分",
-      "trader": {
-        "id": "5a7c2ebb46aef81a7ca2145f",
-        "name": "治疗者",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
-      },
+      "id": "596b36c586f77450d6045ad2",
+      "name": "每天一个苹果医生远离我",
+      "trader": {"id": "54cb57776803fa99248b456e", "name": "治疗者", "imageLink": "https://assets.tarkov.dev/portrait-therapist.webp"},
       "map": null,
-      "minPlayerLevel": 10,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5967734b86f774631e0c4988",
-            "name": "治疗方法-第二部分"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5979f87ad2720a4e5311f6a1",
-          "type": "giveItem",
-          "description": "交出3个止痛药",
-          "optional": false,
-          "count": 3
-        },
-        {
-          "id": "5979f87ad2720a4e5311f6a2",
-          "type": "giveItem",
-          "description": "交出3个绷带",
-          "optional": false,
-          "count": 3
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "治疗者" },
-            "standing": 0.04
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 70000
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 1200
-      },
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Painkiller"
+      "minPlayerLevel": 15,
+      "taskRequirements": [{"task": {"id": "596a0e1686f7742723233f18", "name": "药剂师"}}],
+      "objectives": [{"id": "obj-apple-1", "type": "giveItem", "description": "交出5个止血带和5个止痛药", "optional": false, "count": 10}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "治疗者"}, "standing": 0.05}], "items": [{"item": {"name": "卢布"}, "count": 80000}], "experience": 4200},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/An_Apple_a_Day"
+    },
+    {
+      "id": "5fd9ead3c1ce6a15ce78e3c7",
+      "name": "实验室钥匙",
+      "trader": {"id": "54cb57776803fa99248b456e", "name": "治疗者", "imageLink": "https://assets.tarkov.dev/portrait-therapist.webp"},
+      "map": null,
+      "minPlayerLevel": 20,
+      "taskRequirements": [{"task": {"id": "596b36c586f77450d6045ad2", "name": "每天一个苹果医生远离我"}}],
+      "objectives": [{"id": "obj-labkey-1", "type": "giveItem", "description": "交出TerraGroup实验室钥匙卡", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "治疗者"}, "standing": 0.05}], "items": [{"item": {"name": "卢布"}, "count": 150000}], "experience": 6000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/The_Lab_Access"
+    },
+    {
+      "id": "5fd9ead3c1ce6a15ce78e3c8",
+      "name": "私人诊所",
+      "trader": {"id": "54cb57776803fa99248b456e", "name": "治疗者", "imageLink": "https://assets.tarkov.dev/portrait-therapist.webp"},
+      "map": {"id": "shoreline", "name": "海岸线"},
+      "minPlayerLevel": 25,
+      "taskRequirements": [{"task": {"id": "5fd9ead3c1ce6a15ce78e3c7", "name": "实验室钥匙"}}],
+      "objectives": [{"id": "obj-clinic-1", "type": "find", "description": "在海岸线找到LEDX", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "治疗者"}, "standing": 0.06}], "items": [{"item": {"name": "卢布"}, "count": 200000}], "experience": 8000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Private_Clinic"
     },
     {
       "id": "596b455186f77457cb50eccb",
       "name": "操作水泵",
-      "trader": {
-        "id": "58330581ace78e27b8b10cee",
-        "name": "斯卡尔",
-        "imageLink": "https://assets.tarkov.dev/portrait-5c0647fdd443bc2504c2d371-skier.webp"
-      },
-      "map": {
-        "id": "59fc81d786f774390775787e",
-        "name": "海关"
-      },
+      "trader": {"id": "58330581ace78e27b8b10cee", "name": "斯卡尔", "imageLink": "https://assets.tarkov.dev/portrait-skier.webp"},
+      "map": {"id": "customs", "name": "海关"},
       "minPlayerLevel": 5,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5936d90786f7742b1420ba5b",
-            "name": "出门行动"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "596b455586f77457cb50eccc",
-          "type": "visit",
-          "description": "找到操作水泵的房间",
-          "optional": false
-        },
-        {
-          "id": "596b455586f77457cb50eccd",
-          "type": "plantItem",
-          "description": "在水泵处放置一个标记",
-          "optional": false,
-          "count": 1
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "斯卡尔" },
-            "standing": 0.03
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 50000
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 900
-      },
+      "taskRequirements": [{"task": {"id": "5936d90786f7742b1420ba5b", "name": "出门行动"}}],
+      "objectives": [{"id": "obj-aquarius-1", "type": "visit", "description": "找到操作水泵的房间", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "斯卡尔"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 50000}], "experience": 900},
       "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Operation_Aquarius"
     },
     {
-      "id": "5979eee086f774311953e0d4",
-      "name": "药物-第一部分",
-      "trader": {
-        "id": "54cb57776803fa99248b456e",
-        "name": "治疗者",
-        "imageLink": "https://assets.tarkov.dev/portrait-5a7c2ebb46aef81a7ca2145f-therapist.webp"
-      },
-      "map": {
-        "id": "59fc81d786f774390775787e",
-        "name": "海关"
-      },
+      "id": "596b43fb86f77457ca186186",
+      "name": "操作水泵-第二部分",
+      "trader": {"id": "58330581ace78e27b8b10cee", "name": "斯卡尔", "imageLink": "https://assets.tarkov.dev/portrait-skier.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 7,
+      "taskRequirements": [{"task": {"id": "596b455186f77457cb50eccb", "name": "操作水泵"}}],
+      "objectives": [{"id": "obj-aquarius2-1", "type": "find", "description": "在海关找到水质样本", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "斯卡尔"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 55000}], "experience": 2000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Operation_Aquarius_Part_2"
+    },
+    {
+      "id": "5969f90786f77420d2328015",
+      "name": "供给商",
+      "trader": {"id": "58330581ace78e27b8b10cee", "name": "斯卡尔", "imageLink": "https://assets.tarkov.dev/portrait-skier.webp"},
+      "map": {"id": "customs", "name": "海关"},
       "minPlayerLevel": 8,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "596b455186f77457cb50eccb",
-            "name": "操作水泵"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5979eee686f774311953e0d5",
-          "type": "find",
-          "description": "在医院找到医疗用品",
-          "optional": false,
-          "count": 1
-        },
-        {
-          "id": "5979eee686f774311953e0d6",
-          "type": "giveItem",
-          "description": "将医疗用品交给治疗者",
-          "optional": false,
-          "count": 1
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "治疗者" },
-            "standing": 0.04
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 75000
-          }
-        ],
-        "offerUnlock": [
-          {
-            "trader": { "name": "治疗者" },
-            "item": { "name": "高级急救包" }
-          }
-        ],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 1100
-      },
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pharmacist"
+      "taskRequirements": [{"task": {"id": "596b43fb86f77457ca186186", "name": "操作水泵-第二部分"}}],
+      "objectives": [{"id": "obj-supplier-1", "type": "find", "description": "在海关找到物资", "optional": false, "count": 3}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "斯卡尔"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 60000}], "experience": 2500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Supplier"
     },
     {
       "id": "5979f0b286f77426d702a0f2",
-      "name": "交易员",
-      "trader": {
-        "id": "5935c25fb3acc3127c3d8cd9",
-        "name": "商人",
-        "imageLink": "https://assets.tarkov.dev/portrait-5ac3b934156ae10c4430e83c-ragman.webp"
-      },
+      "name": "西方朋友-第一部分",
+      "trader": {"id": "58330581ace78e27b8b10cee", "name": "斯卡尔", "imageLink": "https://assets.tarkov.dev/portrait-skier.webp"},
       "map": null,
       "minPlayerLevel": 10,
-      "taskRequirements": [
-        {
-          "task": {
-            "id": "5979eee086f774311953e0d4",
-            "name": "药物-第一部分"
-          }
-        }
-      ],
-      "objectives": [
-        {
-          "id": "5979f0b686f77426d702a0f3",
-          "type": "giveItem",
-          "description": "交出5个肥皂",
-          "optional": false,
-          "count": 5
-        },
-        {
-          "id": "5979f0b686f77426d702a0f4",
-          "type": "giveItem",
-          "description": "交出2个打火机",
-          "optional": true,
-          "count": 2
-        }
-      ],
-      "startRewards": {
-        "traderStanding": [],
-        "items": []
-      },
-      "finishRewards": {
-        "traderStanding": [
-          {
-            "trader": { "name": "商人" },
-            "standing": 0.05
-          }
-        ],
-        "items": [
-          {
-            "item": { "name": "卢布" },
-            "count": 100000
-          },
-          {
-            "item": { "name": "MBSS背包" },
-            "count": 1
-          }
-        ],
-        "offerUnlock": [],
-        "craftUnlock": [],
-        "skillLevelReward": [],
-        "traderUnlock": [],
-        "experience": 1500
-      },
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Trading"
+      "taskRequirements": [{"task": {"id": "5969f90786f77420d2328015", "name": "供给商"}}],
+      "objectives": [{"id": "obj-friend-1", "type": "kill", "description": "击杀USEC玩家", "optional": false, "count": 3}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "斯卡尔"}, "standing": 0.04}], "items": [{"item": {"name": "卢布"}, "count": 70000}], "experience": 3000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Friend_from_the_West"
+    },
+    {
+      "id": "5979f876d2720a4e5211f6a9",
+      "name": "西方朋友-第二部分",
+      "trader": {"id": "58330581ace78e27b8b10cee", "name": "斯卡尔", "imageLink": "https://assets.tarkov.dev/portrait-skier.webp"},
+      "map": null,
+      "minPlayerLevel": 12,
+      "taskRequirements": [{"task": {"id": "5979f0b286f77426d702a0f2", "name": "西方朋友-第一部分"}}],
+      "objectives": [{"id": "obj-friend2-1", "type": "kill", "description": "击杀更多USEC玩家", "optional": false, "count": 7}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "斯卡尔"}, "standing": 0.04}], "items": [{"item": {"name": "美元"}, "count": 5000}], "experience": 4500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Friend_from_the_West_Part_2"
+    },
+    {
+      "id": "5979eee086f774311953e0d4",
+      "name": "化学物质-第一部分",
+      "trader": {"id": "58330581ace78e27b8b10cee", "name": "斯卡尔", "imageLink": "https://assets.tarkov.dev/portrait-skier.webp"},
+      "map": {"id": "customs", "name": "海关"},
+      "minPlayerLevel": 15,
+      "taskRequirements": [{"task": {"id": "5979f876d2720a4e5211f6a9", "name": "西方朋友-第二部分"}}],
+      "objectives": [{"id": "obj-chemical-1", "type": "find", "description": "找到化学品样本", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "斯卡尔"}, "standing": 0.04}], "items": [{"item": {"name": "卢布"}, "count": 90000}], "experience": 5500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Chemical_Part_1"
+    },
+    {
+      "id": "60c0c021d4a9d01333124ead",
+      "name": "街道调查",
+      "trader": {"id": "58330581ace78e27b8b10cee", "name": "斯卡尔", "imageLink": "https://assets.tarkov.dev/portrait-skier.webp"},
+      "map": {"id": "streets", "name": "塔可夫街区"},
+      "minPlayerLevel": 25,
+      "taskRequirements": [{"task": {"id": "5979eee086f774311953e0d4", "name": "化学物质-第一部分"}}],
+      "objectives": [{"id": "obj-streets-1", "type": "visit", "description": "侦察塔可夫街区", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "斯卡尔"}, "standing": 0.05}], "items": [{"item": {"name": "卢布"}, "count": 120000}], "experience": 7000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Streets_Investigation"
+    },
+    {
+      "id": "5a27b75b86f7742e97191958",
+      "name": "和平使者的援助",
+      "trader": {"id": "5935c25fb3acc3127c3d8cd9", "name": "和平使者", "imageLink": "https://assets.tarkov.dev/portrait-peacekeeper.webp"},
+      "map": null,
+      "minPlayerLevel": 1,
+      "taskRequirements": [{"task": {"id": "5936d90786f7742b1420ba5b", "name": "出门行动"}}],
+      "objectives": [{"id": "obj-pk-1", "type": "giveItem", "description": "交出美元", "optional": false, "count": 6000}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "和平使者"}, "standing": 0.05}], "items": [{"item": {"name": "美元"}, "count": 500}], "experience": 1000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Friend_from_the_West"
+    },
+    {
+      "id": "5a27b7a786f77460de0252a8",
+      "name": "人道主义物资",
+      "trader": {"id": "5935c25fb3acc3127c3d8cd9", "name": "和平使者", "imageLink": "https://assets.tarkov.dev/portrait-peacekeeper.webp"},
+      "map": {"id": "shoreline", "name": "海岸线"},
+      "minPlayerLevel": 10,
+      "taskRequirements": [{"task": {"id": "5a27b75b86f7742e97191958", "name": "和平使者的援助"}}],
+      "objectives": [{"id": "obj-humanitarian-1", "type": "find", "description": "在海岸线找到物资", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "和平使者"}, "standing": 0.04}], "items": [{"item": {"name": "美元"}, "count": 1000}], "experience": 3500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Humanitarian_Supplies"
+    },
+    {
+      "id": "5a27b80086f774429a5d7e20",
+      "name": "Spa之旅-第一部分",
+      "trader": {"id": "5935c25fb3acc3127c3d8cd9", "name": "和平使者", "imageLink": "https://assets.tarkov.dev/portrait-peacekeeper.webp"},
+      "map": {"id": "shoreline", "name": "海岸线"},
+      "minPlayerLevel": 12,
+      "taskRequirements": [{"task": {"id": "5a27b7a786f77460de0252a8", "name": "人道主义物资"}}],
+      "objectives": [{"id": "obj-spa-1", "type": "find", "description": "在海岸线疗养院找到文件", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "和平使者"}, "standing": 0.04}], "items": [{"item": {"name": "美元"}, "count": 1500}], "experience": 4000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Spa_Tour_Part_1"
+    },
+    {
+      "id": "5a27c99a86f7747d2c6bdd8e",
+      "name": "Cargo X-第一部分",
+      "trader": {"id": "5935c25fb3acc3127c3d8cd9", "name": "和平使者", "imageLink": "https://assets.tarkov.dev/portrait-peacekeeper.webp"},
+      "map": {"id": "shoreline", "name": "海岸线"},
+      "minPlayerLevel": 14,
+      "taskRequirements": [{"task": {"id": "5a27b80086f774429a5d7e20", "name": "Spa之旅-第一部分"}}],
+      "objectives": [{"id": "obj-cargo-1", "type": "find", "description": "找到Cargo X货物信息", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "和平使者"}, "standing": 0.05}], "items": [{"item": {"name": "美元"}, "count": 2000}], "experience": 4500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cargo_X_Part_1"
+    },
+    {
+      "id": "5a68661a86f77419e04fdec7",
+      "name": "枪匠-第一部分",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": null,
+      "minPlayerLevel": 5,
+      "taskRequirements": [{"task": {"id": "5936d90786f7742b1420ba5b", "name": "出门行动"}}],
+      "objectives": [{"id": "obj-gunsmith-1", "type": "giveItem", "description": "改装MP-133霰弹枪", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 35000}], "experience": 1800},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gunsmith_Part_1"
+    },
+    {
+      "id": "5a68665c86f77419f3475315",
+      "name": "枪匠-第二部分",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": null,
+      "minPlayerLevel": 8,
+      "taskRequirements": [{"task": {"id": "5a68661a86f77419e04fdec7", "name": "枪匠-第一部分"}}],
+      "objectives": [{"id": "obj-gunsmith2-1", "type": "giveItem", "description": "改装AKS-74U", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 40000}], "experience": 2200},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gunsmith_Part_2"
+    },
+    {
+      "id": "5a68666e86f77419f14d8e9b",
+      "name": "枪匠-第三部分",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": null,
+      "minPlayerLevel": 10,
+      "taskRequirements": [{"task": {"id": "5a68665c86f77419f3475315", "name": "枪匠-第二部分"}}],
+      "objectives": [{"id": "obj-gunsmith3-1", "type": "giveItem", "description": "改装MP5", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 45000}], "experience": 2600},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gunsmith_Part_3"
+    },
+    {
+      "id": "5a68667486f77419f94f8676",
+      "name": "枪匠-第四部分",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": null,
+      "minPlayerLevel": 12,
+      "taskRequirements": [{"task": {"id": "5a68666e86f77419f14d8e9b", "name": "枪匠-第三部分"}}],
+      "objectives": [{"id": "obj-gunsmith4-1", "type": "giveItem", "description": "改装OP-SKS", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 50000}], "experience": 3000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gunsmith_Part_4"
+    },
+    {
+      "id": "5a68667e86f7741ec12b4a8e",
+      "name": "枪匠-第五部分",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": null,
+      "minPlayerLevel": 14,
+      "taskRequirements": [{"task": {"id": "5a68667486f77419f94f8676", "name": "枪匠-第四部分"}}],
+      "objectives": [{"id": "obj-gunsmith5-1", "type": "giveItem", "description": "改装Remington Model 870", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 55000}], "experience": 3400},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gunsmith_Part_5"
+    },
+    {
+      "id": "5eda45ed051092064a30f8e0",
+      "name": "信号-第一部分",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": {"id": "reserve", "name": "储备站"},
+      "minPlayerLevel": 15,
+      "taskRequirements": [{"task": {"id": "5a68667e86f7741ec12b4a8e", "name": "枪匠-第五部分"}}],
+      "objectives": [{"id": "obj-signal-1", "type": "find", "description": "在储备站找到信号设备", "optional": false, "count": 1}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.04}], "items": [{"item": {"name": "卢布"}, "count": 70000}], "experience": 4000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Signal_Part_1"
+    },
+    {
+      "id": "5eda46ea051092064a30f8e2",
+      "name": "侦察",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": {"id": "reserve", "name": "储备站"},
+      "minPlayerLevel": 18,
+      "taskRequirements": [{"task": {"id": "5eda45ed051092064a30f8e0", "name": "信号-第一部分"}}],
+      "objectives": [{"id": "obj-scout-1", "type": "visit", "description": "侦察储备站特定区域", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.04}], "items": [{"item": {"name": "卢布"}, "count": 80000}], "experience": 5000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Scout"
+    },
+    {
+      "id": "60c0c021d4a9d01333124eac",
+      "name": "灯塔导航",
+      "trader": {"id": "5a7c2ebb46aef81a7ca2145f", "name": "机械师", "imageLink": "https://assets.tarkov.dev/portrait-mechanic.webp"},
+      "map": {"id": "lighthouse", "name": "灯塔"},
+      "minPlayerLevel": 20,
+      "taskRequirements": [{"task": {"id": "5eda46ea051092064a30f8e2", "name": "侦察"}}],
+      "objectives": [{"id": "obj-lighthouse-1", "type": "visit", "description": "探索灯塔区域", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "机械师"}, "standing": 0.05}], "items": [{"item": {"name": "卢布"}, "count": 100000}], "experience": 6500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Lighthouse_Navigation"
+    },
+    {
+      "id": "5ac3475486f7741d6224abd3",
+      "name": "大促销",
+      "trader": {"id": "5ac3b934156ae10c4430e83c", "name": "商人", "imageLink": "https://assets.tarkov.dev/portrait-ragman.webp"},
+      "map": null,
+      "minPlayerLevel": 1,
+      "taskRequirements": [{"task": {"id": "5936d90786f7742b1420ba5b", "name": "出门行动"}}],
+      "objectives": [{"id": "obj-sale-1", "type": "giveItem", "description": "交出战术背心", "optional": false, "count": 2}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "商人"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 25000}], "experience": 500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Big_Sale"
+    },
+    {
+      "id": "5ac3477486f7741d6a145a05",
+      "name": "促销之夜",
+      "trader": {"id": "5ac3b934156ae10c4430e83c", "name": "商人", "imageLink": "https://assets.tarkov.dev/portrait-ragman.webp"},
+      "map": {"id": "interchange", "name": "立交桥"},
+      "minPlayerLevel": 10,
+      "taskRequirements": [{"task": {"id": "5ac3475486f7741d6224abd3", "name": "大促销"}}],
+      "objectives": [{"id": "obj-night-1", "type": "find", "description": "在立交桥找到服装", "optional": false, "count": 3}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "商人"}, "standing": 0.04}], "items": [{"item": {"name": "卢布"}, "count": 60000}], "experience": 3000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Sales_Night"
+    },
+    {
+      "id": "5ac3479086f7742880308185",
+      "name": "战争之血-第一部分",
+      "trader": {"id": "5ac3b934156ae10c4430e83c", "name": "商人", "imageLink": "https://assets.tarkov.dev/portrait-ragman.webp"},
+      "map": null,
+      "minPlayerLevel": 15,
+      "taskRequirements": [{"task": {"id": "5ac3477486f7741d6a145a05", "name": "促销之夜"}}],
+      "objectives": [{"id": "obj-blood-1", "type": "giveItem", "description": "交出军用盔甲", "optional": false, "count": 5}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "商人"}, "standing": 0.05}], "items": [{"item": {"name": "卢布"}, "count": 80000}], "experience": 4500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/The_Blood_of_War"
+    },
+    {
+      "id": "5b47749f86f7746c5d6a5fd9",
+      "name": "相识",
+      "trader": {"id": "5c0647fdd443bc2504c2d371", "name": "猎人", "imageLink": "https://assets.tarkov.dev/portrait-jaeger.webp"},
+      "map": {"id": "woods", "name": "森林"},
+      "minPlayerLevel": 1,
+      "taskRequirements": [{"task": {"id": "5936d90786f7742b1420ba5b", "name": "出门行动"}}],
+      "objectives": [{"id": "obj-intro-1", "type": "find", "description": "在森林找到猎人的营地", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "猎人"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 20000}], "experience": 800},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Introduction"
+    },
+    {
+      "id": "5b47825a86f77468074618d3",
+      "name": "猎人之路-林中兽",
+      "trader": {"id": "5c0647fdd443bc2504c2d371", "name": "猎人", "imageLink": "https://assets.tarkov.dev/portrait-jaeger.webp"},
+      "map": {"id": "woods", "name": "森林"},
+      "minPlayerLevel": 5,
+      "taskRequirements": [{"task": {"id": "5b47749f86f7746c5d6a5fd9", "name": "相识"}}],
+      "objectives": [{"id": "obj-hunter-1", "type": "kill", "description": "使用霰弹枪击杀Scav", "optional": false, "count": 3}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "猎人"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 35000}], "experience": 2000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/The_Huntsman_Path_Woods_Keeper"
+    },
+    {
+      "id": "5b478b6886f77478cf42e1d9",
+      "name": "幸存者之路-无处可逃",
+      "trader": {"id": "5c0647fdd443bc2504c2d371", "name": "猎人", "imageLink": "https://assets.tarkov.dev/portrait-jaeger.webp"},
+      "map": null,
+      "minPlayerLevel": 8,
+      "taskRequirements": [{"task": {"id": "5b47825a86f77468074618d3", "name": "猎人之路-林中兽"}}],
+      "objectives": [{"id": "obj-survivor-1", "type": "extract", "description": "不携带医疗用品撤离", "optional": false, "count": 3}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "猎人"}, "standing": 0.03}], "items": [{"item": {"name": "卢布"}, "count": 40000}], "experience": 2500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/The_Survivalist_Path"
+    },
+    {
+      "id": "5c51aac186f77432ea65c552",
+      "name": "狡诈者",
+      "trader": {"id": "5c0647fdd443bc2504c2d371", "name": "猎人", "imageLink": "https://assets.tarkov.dev/portrait-jaeger.webp"},
+      "map": {"id": "woods", "name": "森林"},
+      "minPlayerLevel": 12,
+      "taskRequirements": [{"task": {"id": "5b478b6886f77478cf42e1d9", "name": "幸存者之路-无处可逃"}}],
+      "objectives": [{"id": "obj-trickster-1", "type": "kill", "description": "在森林使用消音武器击杀PMC", "optional": false, "count": 2}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "猎人"}, "standing": 0.04}], "items": [{"item": {"name": "卢布"}, "count": 50000}], "experience": 3500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/The_Tarkov_Shooter"
+    },
+    {
+      "id": "60c0c021d4a9d01333124eae",
+      "name": "地底探索",
+      "trader": {"id": "5c0647fdd443bc2504c2d371", "name": "猎人", "imageLink": "https://assets.tarkov.dev/portrait-jaeger.webp"},
+      "map": {"id": "ground_zero", "name": "归零地"},
+      "minPlayerLevel": 30,
+      "taskRequirements": [{"task": {"id": "5c51aac186f77432ea65c552", "name": "狡诈者"}}],
+      "objectives": [{"id": "obj-ground-1", "type": "visit", "description": "探索归零地地区", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "猎人"}, "standing": 0.05}], "items": [{"item": {"name": "卢布"}, "count": 130000}], "experience": 7500},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Ground_Zero_Exploration"
+    },
+    {
+      "id": "fence001",
+      "name": "补偿损失",
+      "trader": {"id": "fence_id", "name": "商贩", "imageLink": "https://assets.tarkov.dev/portrait-fence.webp"},
+      "map": null,
+      "minPlayerLevel": 40,
+      "taskRequirements": [{"task": {"id": "596760e186f7741e11214d58", "name": "完美调解人"}}],
+      "objectives": [{"id": "obj-fence-1", "type": "giveItem", "description": "交出USEC和BEAR狗牌", "optional": false, "count": 50}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "商贩"}, "standing": 0.1}], "items": [{"item": {"name": "卢布"}, "count": 500000}], "experience": 25000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Compensation_for_Damage"
+    },
+    {
+      "id": "lightkeeper001",
+      "name": "评估",
+      "trader": {"id": "lightkeeper_id", "name": "灯塔守护者", "imageLink": "https://assets.tarkov.dev/portrait-lightkeeper.webp"},
+      "map": {"id": "lighthouse", "name": "灯塔"},
+      "minPlayerLevel": 45,
+      "taskRequirements": [{"task": {"id": "fence001", "name": "补偿损失"}}],
+      "objectives": [{"id": "obj-assess-1", "type": "visit", "description": "访问灯塔守护者的营地", "optional": false}],
+      "finishRewards": {"traderStanding": [{"trader": {"name": "灯塔守护者"}, "standing": 0.1}], "items": [{"item": {"name": "卢布"}, "count": 1000000}], "experience": 50000},
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Assessment"
     }
   ]
 }
