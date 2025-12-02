@@ -1,7 +1,8 @@
 /**
  * TaskFlowDemo - 任务流程图演示页面
  * 
- * 该页面用于演示 TaskNode 组件在 React Flow 中的使用
+ * 该页面用于展示从 tarkov.dev API 获取的任务数据
+ * 使用 React Flow 展示任务之间的依赖关系
  */
 
 import { useCallback, useMemo, useState } from 'react';
@@ -19,190 +20,137 @@ import { Box, Typography, Paper } from '@mui/material';
 import TaskNodeComponent from '../components/TaskNode';
 import type { TaskNode } from '../components/TaskNode';
 import type { Edge, Connection, NodeTypes } from '@xyflow/react';
+import { taskDataArray } from '../data/TaskData';
+import type { TaskData } from '../types/Task';
 
 /**
- * 示例任务数据
+ * 为任务节点计算布局位置
+ * @param tasks - 任务数据数组
+ * @returns 带位置信息的 TaskNode 数组
  */
-const sampleTasks: TaskNode[] = [
-  {
-    id: 'task-1',
-    type: 'task',
-    position: { x: 250, y: 0 },
-    data: {
-      taskId: 'quest-001',
-      taskGroup: '新手任务',
-      trader: {
-        id: 'prapor',
-        name: 'Prapor',
-        imageUrl: '',
-      },
-      taskName: '首次出击',
-      objectives: [
-        {
-          id: 'obj-1',
-          description: '在任意地图存活并撤离',
-          type: 'extract',
-          count: 1,
-        },
-        {
-          id: 'obj-2',
-          description: '收集 3 个止痛药',
-          type: 'collect',
-          count: 3,
-          optional: false,
-        },
-      ],
-      rewards: [
-        { type: 'experience', value: 1000, description: '+1000 经验' },
-        { type: 'money', value: 50000, description: '50,000 ₽' },
-        { type: 'reputation', value: 0.02, description: 'Prapor +0.02' },
-      ],
-      unlockRequirements: [],
-      followUpTasks: [
-        { taskId: 'quest-002', taskName: '物资补给', traderName: 'Prapor' },
-      ],
-      minPlayerLevel: 1,
-    },
-  },
-  {
-    id: 'task-2',
-    type: 'task',
-    position: { x: 250, y: 450 },
-    data: {
-      taskId: 'quest-002',
-      taskGroup: '新手任务',
-      trader: {
-        id: 'prapor',
-        name: 'Prapor',
-        imageUrl: '',
-      },
-      taskName: '物资补给',
-      objectives: [
-        {
-          id: 'obj-1',
-          description: '在海关找到物资箱',
-          type: 'find',
-          count: 1,
-        },
-        {
-          id: 'obj-2',
-          description: '将物资箱交给 Prapor',
-          type: 'handover',
-          count: 1,
-        },
-        {
-          id: 'obj-3',
-          description: '收集额外物资',
-          type: 'collect',
-          count: 5,
-          optional: true,
-        },
-      ],
-      rewards: [
-        { type: 'experience', value: 2500, description: '+2500 经验' },
-        { type: 'money', value: 100000, description: '100,000 ₽' },
-        { type: 'item', value: 'MBSS背包', description: 'MBSS背包 x1' },
-        { type: 'unlock', value: '解锁商人物品', description: '解锁 Prapor LL2' },
-      ],
-      unlockRequirements: [
-        { type: 'task', taskId: 'quest-001', taskName: '首次出击' },
-        { type: 'level', level: 5 },
-      ],
-      followUpTasks: [
-        { taskId: 'quest-003', taskName: '深入敌后', traderName: 'Prapor' },
-        { taskId: 'quest-004', taskName: '医疗援助', traderName: 'Therapist' },
-      ],
-      minPlayerLevel: 5,
-    },
-  },
-  {
-    id: 'task-3',
-    type: 'task',
-    position: { x: 0, y: 900 },
-    data: {
-      taskId: 'quest-003',
-      taskGroup: '主线任务',
-      trader: {
-        id: 'prapor',
-        name: 'Prapor',
-        imageUrl: '',
-      },
-      taskName: '深入敌后',
-      objectives: [
-        {
-          id: 'obj-1',
-          description: '在工厂击杀 10 名 Scav',
-          type: 'kill',
-          count: 10,
-        },
-      ],
-      rewards: [
-        { type: 'experience', value: 5000, description: '+5000 经验' },
-        { type: 'money', value: 200000, description: '200,000 ₽' },
-      ],
-      unlockRequirements: [
-        { type: 'task', taskId: 'quest-002', taskName: '物资补给' },
-      ],
-      followUpTasks: [],
-      minPlayerLevel: 8,
-    },
-  },
-  {
-    id: 'task-4',
-    type: 'task',
-    position: { x: 500, y: 900 },
-    data: {
-      taskId: 'quest-004',
-      taskGroup: '医疗任务',
-      trader: {
-        id: 'therapist',
-        name: 'Therapist',
-        imageUrl: '',
-      },
-      taskName: '医疗援助',
-      objectives: [
-        {
-          id: 'obj-1',
-          description: '收集 5 个急救包',
-          type: 'collect',
-          count: 5,
-        },
-        {
-          id: 'obj-2',
-          description: '交给 Therapist',
-          type: 'handover',
-          count: 5,
-        },
-      ],
-      rewards: [
-        { type: 'experience', value: 3000, description: '+3000 经验' },
-        { type: 'reputation', value: 0.05, description: 'Therapist +0.05' },
-        { type: 'skill', value: '急救技能', description: '急救技能 +1' },
-      ],
-      unlockRequirements: [
-        { type: 'task', taskId: 'quest-002', taskName: '物资补给' },
-        { type: 'level', level: 6 },
-      ],
-      followUpTasks: [],
-      minPlayerLevel: 6,
-    },
-  },
-];
+function layoutTasks(tasks: TaskData[]): TaskNode[] {
+  // 构建任务层级映射（基于前置任务数量）
+  const taskLevelMap = new Map<string, number>();
+  const taskMap = new Map<string, TaskData>();
+  
+  tasks.forEach((task) => {
+    taskMap.set(task.taskId, task);
+  });
+  
+  // 计算每个任务的层级（深度优先搜索）
+  function getTaskLevel(taskId: string, visited: Set<string>): number {
+    // 检测循环依赖
+    if (visited.has(taskId)) return 0;
+    
+    // 如果已计算过，直接返回缓存结果
+    if (taskLevelMap.has(taskId)) {
+      return taskLevelMap.get(taskId)!;
+    }
+    
+    const task = taskMap.get(taskId);
+    if (!task) return 0;
+    
+    // 将当前任务加入访问集合
+    visited.add(taskId);
+    
+    const prereqTasks = task.unlockRequirements
+      .filter((req) => req.type === 'task' && req.taskId)
+      .map((req) => req.taskId!);
+    
+    if (prereqTasks.length === 0) {
+      taskLevelMap.set(taskId, 0);
+      visited.delete(taskId);
+      return 0;
+    }
+    
+    const maxPrereqLevel = Math.max(
+      ...prereqTasks.map((prereqId) => getTaskLevel(prereqId, visited))
+    );
+    const level = maxPrereqLevel + 1;
+    taskLevelMap.set(taskId, level);
+    visited.delete(taskId);
+    return level;
+  }
+  
+  // 计算所有任务的层级
+  tasks.forEach((task) => getTaskLevel(task.taskId, new Set()));
+  
+  // 按层级分组
+  const levelGroups = new Map<number, TaskData[]>();
+  tasks.forEach((task) => {
+    const level = taskLevelMap.get(task.taskId) || 0;
+    if (!levelGroups.has(level)) {
+      levelGroups.set(level, []);
+    }
+    levelGroups.get(level)!.push(task);
+  });
+  
+  // 生成带位置的节点
+  const NODE_HEIGHT = 500; // 节点垂直间距
+  const NODE_WIDTH = 450;  // 节点水平间距
+  
+  const nodes: TaskNode[] = [];
+  
+  levelGroups.forEach((tasksInLevel, level) => {
+    const yPosition = level * NODE_HEIGHT;
+    const totalWidth = tasksInLevel.length * NODE_WIDTH;
+    const startX = -totalWidth / 2 + NODE_WIDTH / 2;
+    
+    tasksInLevel.forEach((task, index) => {
+      nodes.push({
+        id: task.taskId,
+        type: 'task',
+        position: { x: startX + index * NODE_WIDTH, y: yPosition },
+        data: task,
+      });
+    });
+  });
+  
+  return nodes;
+}
 
 /**
- * 初始边（连接线）
+ * 根据任务数据生成边（连接线）
+ * @param tasks - 任务数据数组
+ * @returns Edge 数组
  */
-const initialEdges: Edge[] = [
-  { id: 'e1-2', source: 'task-1', target: 'task-2', animated: true },
-  { id: 'e2-3', source: 'task-2', target: 'task-3', animated: true },
-  { id: 'e2-4', source: 'task-2', target: 'task-4', animated: true },
-];
+function generateEdges(tasks: TaskData[]): Edge[] {
+  const edges: Edge[] = [];
+  const taskSet = new Set(tasks.map((t) => t.taskId));
+  
+  tasks.forEach((task) => {
+    const prereqTasks = task.unlockRequirements
+      .filter((req) => req.type === 'task' && req.taskId && taskSet.has(req.taskId))
+      .map((req) => req.taskId!);
+    
+    prereqTasks.forEach((prereqId) => {
+      edges.push({
+        id: `edge-${prereqId}-${task.taskId}`,
+        source: prereqId,
+        target: task.taskId,
+        animated: true,
+      });
+    });
+  });
+  
+  return edges;
+}
+
+/**
+ * 从 taskDataArray 生成初始节点
+ */
+const initialNodes: TaskNode[] = layoutTasks(taskDataArray);
+
+/**
+ * 从 taskDataArray 生成初始边
+ */
+const initialEdges: Edge[] = generateEdges(taskDataArray);
 
 /**
  * TaskFlowDemo 页面组件
  */
 export default function TaskFlowDemo() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(sampleTasks);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [selectedTask, setSelectedTask] = useState<string | null>(null);
 
@@ -222,6 +170,13 @@ export default function TaskFlowDemo() {
     setSelectedTask(node.data.taskId);
   }, []);
 
+  // 获取选中的任务名称
+  const selectedTaskName = useMemo(() => {
+    if (!selectedTask) return null;
+    const task = taskDataArray.find((t) => t.taskId === selectedTask);
+    return task?.taskName || selectedTask;
+  }, [selectedTask]);
+
   return (
     <Box sx={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* 页面标题 */}
@@ -230,10 +185,10 @@ export default function TaskFlowDemo() {
           任务流程图
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          展示任务之间的依赖关系和流程。点击任务节点查看详情。
-          {selectedTask && (
+          展示 {taskDataArray.length} 个任务之间的依赖关系和流程。点击任务节点查看详情。
+          {selectedTaskName && (
             <span style={{ marginLeft: 16 }}>
-              当前选中: <strong>{selectedTask}</strong>
+              当前选中: <strong>{selectedTaskName}</strong>
             </span>
           )}
         </Typography>
