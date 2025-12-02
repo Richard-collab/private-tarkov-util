@@ -149,7 +149,7 @@ export const fetchWeaponDetails = async (weaponId) => {
       request(API_URL, query, { id: [weaponId] }),
       REQUEST_TIMEOUT
     );
-    return data.items[0];
+    return data.items?.[0] || null;
   } catch (error) {
     console.warn('API请求失败，使用本地缓存数据:', error.message);
     // 动态导入本地缓存数据
@@ -254,7 +254,7 @@ export const fetchModDetails = async (modId) => {
       request(API_URL, query, { id: [modId] }),
       REQUEST_TIMEOUT
     );
-    return data.items[0];
+    return data.items?.[0] || null;
   } catch (error) {
     console.warn('API请求失败，使用本地缓存数据:', error.message);
     // 动态导入本地缓存数据

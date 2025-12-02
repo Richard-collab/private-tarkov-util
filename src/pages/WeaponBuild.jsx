@@ -59,6 +59,15 @@ const formatPrice = (price) => {
 };
 
 /**
+ * 检查配件是否是弹匣类型
+ * @param {object} mod - 配件对象
+ * @returns {boolean} 是否是弹匣
+ */
+const isMagazineMod = (mod) => {
+  return mod?.properties?.capacity !== undefined;
+};
+
+/**
  * 枪械改装页面组件
  * @returns {JSX.Element} 枪械改装页面
  */
@@ -203,8 +212,7 @@ const WeaponBuild = () => {
     });
 
     // 如果更换的是弹匣类型的配件，重置弹药数量
-    if (modItem?.properties?.capacity !== undefined || 
-        installedMods[slotId]?.properties?.capacity !== undefined) {
+    if (isMagazineMod(modItem) || isMagazineMod(installedMods[slotId])) {
       setAmmoCount(0);
     }
   }, [installedMods]);
