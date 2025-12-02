@@ -28,6 +28,7 @@ import {
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import BuildIcon from '@mui/icons-material/Build';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -57,6 +58,11 @@ const menuItems = [
     text: '任务流程',
     icon: <AccountTreeIcon />,
     path: '/task-flow',
+  },
+  {
+    text: '枪械改装',
+    icon: <BuildIcon />,
+    path: '/weapon-build',
   },
 ];
 
