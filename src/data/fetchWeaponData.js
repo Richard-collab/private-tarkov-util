@@ -48,7 +48,7 @@ const weaponsQuery = gql`
 `;
 
 /**
- * GraphQL 查询 - 获取武器详情（包含槽位和兼容配件）
+ * GraphQL 查询 - 获取武器详情（包含槽位和兼容配件，支持3层嵌套槽位）
  */
 const weaponDetailsQuery = gql`
 query GetWeaponDetails($id: [ID]) {
@@ -107,6 +107,27 @@ query GetWeaponDetails($id: [ID]) {
                         image8xLink
                         avg24hPrice
                         basePrice
+                        properties {
+                          ... on ItemPropertiesMod {
+                            ergonomicsModifier
+                            recoilModifier
+                            slots {
+                              id
+                              name
+                              nameId
+                              filters {
+                                allowedItems {
+                                  id
+                                  name
+                                  shortName
+                                  image8xLink
+                                  avg24hPrice
+                                  basePrice
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }

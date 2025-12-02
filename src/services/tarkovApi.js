@@ -2,7 +2,7 @@
  * Tarkov.dev GraphQL API 服务
  * 
  * 用于从 tarkov.dev 获取武器、配件、弹药等数据
- * 当API不可用时，使用本地缓存数据作为后备
+ * 优先使用本地缓存数据，API数据在后台更新
  */
 
 import { request, gql } from 'graphql-request';
@@ -28,8 +28,21 @@ const withTimeout = (promise, timeout) => {
 
 /**
  * 获取所有武器列表（只返回可改装的武器，即有槽位的武器）
+ * 优先使用本地缓存数据
  */
 export const fetchWeapons = async () => {
+  // 优先使用本地缓存数据
+  try {
+    const { default: cachedData } = await import('../data/weaponCache.json');
+    if (cachedData.weapons && cachedData.weapons.length > 0) {
+      console.log('使用本地缓存的武器数据');
+      return cachedData.weapons;
+    }
+  } catch (cacheError) {
+    console.warn('加载本地缓存失败:', cacheError.message);
+  }
+
+  // 缓存不可用时，从API获取
   const query = gql`
     {
       items(lang: zh, types: [gun]) {
@@ -69,18 +82,29 @@ export const fetchWeapons = async () => {
     );
     return modifiableWeapons;
   } catch (error) {
-    console.warn('API请求失败，使用本地缓存数据:', error.message);
-    // 动态导入本地缓存数据
-    const { default: cachedData } = await import('../data/weaponCache.json');
-    return cachedData.weapons;
+    console.warn('API请求失败:', error.message);
+    return [];
   }
 };
 
 /**
  * 获取武器详情，包括槽位信息
+ * 优先使用本地缓存数据
  * @param {string} weaponId - 武器ID
  */
 export const fetchWeaponDetails = async (weaponId) => {
+  // 优先使用本地缓存数据
+  try {
+    const { default: cachedData } = await import('../data/weaponCache.json');
+    if (cachedData.weaponDetails && cachedData.weaponDetails[weaponId]) {
+      console.log('使用本地缓存的武器详情:', weaponId);
+      return cachedData.weaponDetails[weaponId];
+    }
+  } catch (cacheError) {
+    console.warn('加载本地缓存失败:', cacheError.message);
+  }
+
+  // 缓存不可用时，从API获取
   const query = gql`
     query GetWeaponDetails($id: [ID]) {
       items(lang: zh, ids: $id) {
@@ -138,6 +162,27 @@ export const fetchWeaponDetails = async (weaponId) => {
                             image8xLink
                             avg24hPrice
                             basePrice
+                            properties {
+                              ... on ItemPropertiesMod {
+                                ergonomicsModifier
+                                recoilModifier
+                                slots {
+                                  id
+                                  name
+                                  nameId
+                                  filters {
+                                    allowedItems {
+                                      id
+                                      name
+                                      shortName
+                                      image8xLink
+                                      avg24hPrice
+                                      basePrice
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -159,18 +204,29 @@ export const fetchWeaponDetails = async (weaponId) => {
     );
     return data.items?.[0] || null;
   } catch (error) {
-    console.warn('API请求失败，使用本地缓存数据:', error.message);
-    // 动态导入本地缓存数据
-    const { default: cachedData } = await import('../data/weaponCache.json');
-    return cachedData.weaponDetails[weaponId] || null;
+    console.warn('API请求失败:', error.message);
+    return null;
   }
 };
 
 /**
  * 根据口径获取弹药列表
+ * 优先使用本地缓存数据
  * @param {string} caliber - 弹药口径
  */
 export const fetchAmmoByCaliber = async (caliber) => {
+  // 优先使用本地缓存数据
+  try {
+    const { default: cachedData } = await import('../data/weaponCache.json');
+    if (cachedData.ammo && cachedData.ammo[caliber]) {
+      console.log('使用本地缓存的弹药数据:', caliber);
+      return cachedData.ammo[caliber];
+    }
+  } catch (cacheError) {
+    console.warn('加载本地缓存失败:', cacheError.message);
+  }
+
+  // 缓存不可用时，从API获取
   const query = gql`
     query GetAmmo($caliber: String) {
       items(lang: zh, types: [ammo]) {
@@ -204,18 +260,29 @@ export const fetchAmmoByCaliber = async (caliber) => {
       (item) => item.properties && item.properties.caliber === caliber
     );
   } catch (error) {
-    console.warn('API请求失败，使用本地缓存数据:', error.message);
-    // 动态导入本地缓存数据
-    const { default: cachedData } = await import('../data/weaponCache.json');
-    return cachedData.ammo[caliber] || [];
+    console.warn('API请求失败:', error.message);
+    return [];
   }
 };
 
 /**
  * 获取配件详情
+ * 优先使用本地缓存数据
  * @param {string} modId - 配件ID
  */
 export const fetchModDetails = async (modId) => {
+  // 优先使用本地缓存数据
+  try {
+    const { default: cachedData } = await import('../data/weaponCache.json');
+    if (cachedData.mods && cachedData.mods[modId]) {
+      console.log('使用本地缓存的配件数据:', modId);
+      return cachedData.mods[modId];
+    }
+  } catch (cacheError) {
+    console.warn('加载本地缓存失败:', cacheError.message);
+  }
+
+  // 缓存不可用时，从API获取
   const query = gql`
     query GetModDetails($id: [ID]) {
       items(lang: zh, ids: $id) {
@@ -241,6 +308,27 @@ export const fetchModDetails = async (modId) => {
                   image8xLink
                   avg24hPrice
                   basePrice
+                  properties {
+                    ... on ItemPropertiesMod {
+                      ergonomicsModifier
+                      recoilModifier
+                      slots {
+                        id
+                        name
+                        nameId
+                        filters {
+                          allowedItems {
+                            id
+                            name
+                            shortName
+                            image8xLink
+                            avg24hPrice
+                            basePrice
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -264,9 +352,7 @@ export const fetchModDetails = async (modId) => {
     );
     return data.items?.[0] || null;
   } catch (error) {
-    console.warn('API请求失败，使用本地缓存数据:', error.message);
-    // 动态导入本地缓存数据
-    const { default: cachedData } = await import('../data/weaponCache.json');
-    return cachedData.mods[modId] || null;
+    console.warn('API请求失败:', error.message);
+    return null;
   }
 };
