@@ -3,110 +3,39 @@
  * 
  * 该页面用于展示从 tarkov.dev API 获取的任务数据
  * 使用 React Flow 展示任务之间的依赖关系
+ * 
+ * 性能优化:
+ * - 使用 dagre 进行 LR (左到右) 布局预计算
+ * - 使用轻量级 TaskNodeLite 组件
+ * - 使用 react-window 虚拟化任务列表
+ * - 使用 Context 管理过滤状态
+ * - 防抖搜索避免频繁重渲染
  */
 
-import { useCallback, useMemo, useState } from 'react';
-import {
-  ReactFlow,
-  Controls,
-  Background,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  BackgroundVariant,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-import { Box, Typography, Paper } from '@mui/material';
-import TaskNodeComponent from '../components/TaskNode';
-import type { TaskNode } from '../components/TaskNode';
-import type { Edge, Connection, NodeTypes } from '@xyflow/react';
-import { taskDataArray } from '../data/TaskData';
+import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
+import { Box, Typography, Paper, Divider } from '@mui/material';
+import type { Node, Edge } from '@xyflow/react';
+
+import { TaskViewProvider } from '../context/TaskViewContext';
+import TaskFlow from '../components/TaskFlow';
+import TaskListVirtual from '../components/TaskListVirtual';
+import MerchantFilter from '../components/MerchantFilter';
+import TaskSearchBar from '../components/TaskSearchBar';
+import { taskDataArray, getRootTasks } from '../data/TaskData';
 import type { TaskData } from '../types/Task';
 
 /**
- * 为任务节点计算布局位置
+ * 根据任务数据生成 React Flow 节点
  * @param tasks - 任务数据数组
- * @returns 带位置信息的 TaskNode 数组
+ * @returns Node 数组
  */
-function layoutTasks(tasks: TaskData[]): TaskNode[] {
-  // 构建任务层级映射（基于前置任务数量）
-  const taskLevelMap = new Map<string, number>();
-  const taskMap = new Map<string, TaskData>();
-  
-  tasks.forEach((task) => {
-    taskMap.set(task.taskId, task);
-  });
-  
-  // 计算每个任务的层级（深度优先搜索）
-  function getTaskLevel(taskId: string, visited: Set<string>): number {
-    // 检测循环依赖
-    if (visited.has(taskId)) return 0;
-    
-    // 如果已计算过，直接返回缓存结果
-    if (taskLevelMap.has(taskId)) {
-      return taskLevelMap.get(taskId)!;
-    }
-    
-    const task = taskMap.get(taskId);
-    if (!task) return 0;
-    
-    // 将当前任务加入访问集合
-    visited.add(taskId);
-    
-    const prereqTasks = task.unlockRequirements
-      .filter((req) => req.type === 'task' && req.taskId)
-      .map((req) => req.taskId!);
-    
-    if (prereqTasks.length === 0) {
-      taskLevelMap.set(taskId, 0);
-      visited.delete(taskId);
-      return 0;
-    }
-    
-    const maxPrereqLevel = Math.max(
-      ...prereqTasks.map((prereqId) => getTaskLevel(prereqId, visited))
-    );
-    const level = maxPrereqLevel + 1;
-    taskLevelMap.set(taskId, level);
-    visited.delete(taskId);
-    return level;
-  }
-  
-  // 计算所有任务的层级
-  tasks.forEach((task) => getTaskLevel(task.taskId, new Set()));
-  
-  // 按层级分组
-  const levelGroups = new Map<number, TaskData[]>();
-  tasks.forEach((task) => {
-    const level = taskLevelMap.get(task.taskId) || 0;
-    if (!levelGroups.has(level)) {
-      levelGroups.set(level, []);
-    }
-    levelGroups.get(level)!.push(task);
-  });
-  
-  // 生成带位置的节点
-  const NODE_HEIGHT = 500; // 节点垂直间距
-  const NODE_WIDTH = 450;  // 节点水平间距
-  
-  const nodes: TaskNode[] = [];
-  
-  levelGroups.forEach((tasksInLevel, level) => {
-    const yPosition = level * NODE_HEIGHT;
-    const totalWidth = tasksInLevel.length * NODE_WIDTH;
-    const startX = -totalWidth / 2 + NODE_WIDTH / 2;
-    
-    tasksInLevel.forEach((task, index) => {
-      nodes.push({
-        id: task.taskId,
-        type: 'task',
-        position: { x: startX + index * NODE_WIDTH, y: yPosition },
-        data: task,
-      });
-    });
-  });
-  
-  return nodes;
+function generateNodes(tasks: TaskData[]): Node<TaskData>[] {
+  return tasks.map((task) => ({
+    id: task.taskId,
+    type: 'taskLite',
+    position: { x: 0, y: 0 }, // 位置由 dagre 计算
+    data: task,
+  }));
 }
 
 /**
@@ -137,37 +66,22 @@ function generateEdges(tasks: TaskData[]): Edge[] {
 }
 
 /**
- * 从 taskDataArray 生成初始节点
+ * 任务流程图内部组件
+ * 与 TaskViewContext 分离以便在 Provider 内部使用 hooks
  */
-const initialNodes: TaskNode[] = layoutTasks(taskDataArray);
-
-/**
- * 从 taskDataArray 生成初始边
- */
-const initialEdges: Edge[] = generateEdges(taskDataArray);
-
-/**
- * TaskFlowDemo 页面组件
- */
-export default function TaskFlowDemo() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+function TaskFlowDemoContent() {
   const [selectedTask, setSelectedTask] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [listDimensions, setListDimensions] = useState({ width: 320, height: 600 });
 
-  // 自定义节点类型
-  const nodeTypes: NodeTypes = useMemo(() => ({
-    task: TaskNodeComponent,
-  }), []);
+  // 生成节点和边（只计算一次）
+  const rawNodes = useMemo(() => generateNodes(taskDataArray), []);
+  const rawEdges = useMemo(() => generateEdges(taskDataArray), []);
 
-  // 处理连接
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
-
-  // 处理节点点击
-  const onNodeClick = useCallback((_event: React.MouseEvent, node: TaskNode) => {
-    setSelectedTask(node.data.taskId);
+  // 获取起始节点ID
+  const startNodeId = useMemo(() => {
+    const rootTasks = getRootTasks();
+    return rootTasks.length > 0 ? rootTasks[0].taskId : undefined;
   }, []);
 
   // 获取选中的任务名称
@@ -177,40 +91,120 @@ export default function TaskFlowDemo() {
     return task?.taskName || selectedTask;
   }, [selectedTask]);
 
+  // 处理节点点击
+  const handleNodeClick = useCallback((nodeId: string, task: TaskData) => {
+    setSelectedTask(nodeId);
+  }, []);
+
+  // 处理列表任务点击
+  const handleTaskListClick = useCallback((taskId: string) => {
+    setSelectedTask(taskId);
+    // 注意：实际聚焦到节点由 TaskFlow 组件的 searchTerm 变化触发
+    // 这里可以通过 context 或其他方式触发聚焦
+  }, []);
+
+  // 监听容器大小变化以更新列表尺寸
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const container = containerRef.current;
+        setListDimensions({
+          width: 320,
+          height: container.clientHeight - 120, // 减去工具栏和标题高度
+        });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
   return (
-    <Box sx={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* 页面标题 */}
-      <Paper sx={{ p: 2, mb: 2 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          任务流程图
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          展示 {taskDataArray.length} 个任务之间的依赖关系和流程。点击任务节点查看详情。
-          {selectedTaskName && (
-            <span style={{ marginLeft: 16 }}>
-              当前选中: <strong>{selectedTaskName}</strong>
-            </span>
-          )}
-        </Typography>
+    <Box
+      ref={containerRef}
+      sx={{
+        height: 'calc(100vh - 48px)',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* 页面标题和工具栏 */}
+      <Paper sx={{ p: 2, mb: 1, flexShrink: 0 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+            gap: 2,
+          }}
+        >
+          <Box>
+            <Typography variant="h5" component="h1" gutterBottom>
+              任务流程图
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              展示 {taskDataArray.length} 个任务之间的依赖关系。
+              {selectedTaskName && (
+                <span style={{ marginLeft: 8 }}>
+                  当前选中: <strong>{selectedTaskName}</strong>
+                </span>
+              )}
+            </Typography>
+          </Box>
+
+          {/* 过滤器和搜索框 */}
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+            <MerchantFilter tasks={taskDataArray} width={180} />
+            <TaskSearchBar width={240} />
+          </Box>
+        </Box>
       </Paper>
 
-      {/* React Flow 画布 */}
-      <Box sx={{ flex: 1, minHeight: 600 }}>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onNodeClick={onNodeClick}
-          nodeTypes={nodeTypes}
-          fitView
-          fitViewOptions={{ padding: 0.2 }}
+      {/* 主内容区域：左侧任务列表 + 右侧流程图 */}
+      <Box sx={{ flex: 1, display: 'flex', gap: 1, minHeight: 0 }}>
+        {/* 左侧任务列表 */}
+        <Paper
+          sx={{
+            width: 320,
+            flexShrink: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
         >
-          <Controls />
-          <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-        </ReactFlow>
+          <TaskListVirtual
+            tasks={taskDataArray}
+            height={listDimensions.height}
+            width={listDimensions.width}
+            onTaskClick={handleTaskListClick}
+            selectedTaskId={selectedTask}
+          />
+        </Paper>
+
+        {/* 右侧流程图 */}
+        <Paper sx={{ flex: 1, minWidth: 0 }}>
+          <TaskFlow
+            rawNodes={rawNodes}
+            rawEdges={rawEdges}
+            startNodeId={startNodeId}
+            onNodeClick={handleNodeClick}
+          />
+        </Paper>
       </Box>
     </Box>
+  );
+}
+
+/**
+ * TaskFlowDemo 页面组件
+ */
+export default function TaskFlowDemo() {
+  return (
+    <TaskViewProvider>
+      <TaskFlowDemoContent />
+    </TaskViewProvider>
   );
 }

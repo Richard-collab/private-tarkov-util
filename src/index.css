@@ -64,3 +64,35 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Task Node Styles */
+.task-node {
+  transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.task-node.faded {
+  opacity: 0.4;
+  filter: grayscale(50%);
+}
+
+/* React Flow customizations */
+.react-flow__node-taskLite {
+  cursor: pointer;
+}
+
+.react-flow__node-taskLite.selected .task-node {
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+}
+
+/* MiniMap styling */
+.react-flow__minimap {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .react-flow__minimap {
+    background-color: rgba(30, 30, 30, 0.9);
+  }
+}
