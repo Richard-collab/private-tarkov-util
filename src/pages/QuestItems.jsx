@@ -55,14 +55,26 @@ const extractQuestItems = () => {
         const count = objective.count || 1;
 
         if (itemsMap.has(itemId)) {
-          // 如果物品已存在，累加数量并添加任务信息
+          // 如果物品已存在，检查是否已有该任务，避免重复计数
           const existingItem = itemsMap.get(itemId);
-          existingItem.totalCount += count;
-          existingItem.tasks.push({
-            taskName: task.taskName,
-            trader: task.trader.name,
-            count: count,
-          });
+          // 查找是否已经存在相同的任务
+          const existingTaskIndex = existingItem.tasks.findIndex(
+            (t) => t.taskName === task.taskName && t.trader === task.trader.name
+          );
+          
+          if (existingTaskIndex >= 0) {
+            // 任务已存在，累加数量到现有任务
+            existingItem.tasks[existingTaskIndex].count += count;
+            existingItem.totalCount += count;
+          } else {
+            // 新任务，添加到列表
+            existingItem.totalCount += count;
+            existingItem.tasks.push({
+              taskName: task.taskName,
+              trader: task.trader.name,
+              count: count,
+            });
+          }
         } else {
           // 新物品，添加到Map
           itemsMap.set(itemId, {
