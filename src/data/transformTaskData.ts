@@ -106,6 +106,7 @@ function transformObjective(objective: APIObjective): TaskObjective {
     type: objective.type,
     count: objective.count,
     optional: objective.optional ?? false,
+    item: objective.item,
   };
 }
 

@@ -20,6 +20,7 @@ import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import PriceQuery from './pages/PriceQuery';
 import TaskFlowDemo from './pages/TaskFlowDemo';
+import QuestItems from './pages/QuestItems';
 
 // 侧边栏宽度常量
 const DRAWER_WIDTH = 240;
@@ -131,6 +132,8 @@ function App() {
               <Route path="/price-query" element={<PriceQuery />} />
               {/* 任务流程页面路由 */}
               <Route path="/task-flow" element={<TaskFlowDemo />} />
+              {/* 任务物品收集统计页面路由 */}
+              <Route path="/quest-items" element={<QuestItems />} />
             </Routes>
           </Box>
         </Box>

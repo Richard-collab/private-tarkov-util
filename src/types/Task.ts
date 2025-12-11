@@ -13,6 +13,10 @@ export interface TaskObjective {
   type: string; // e.g., 'kill', 'collect', 'handover', 'find', 'place', 'visit'
   count?: number;
   optional?: boolean;
+  item?: {
+    id: string;
+    name: string;
+  };
 }
 
 /**
