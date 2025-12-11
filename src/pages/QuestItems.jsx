@@ -94,8 +94,12 @@ const QuestItems = () => {
   // 选中的商人过滤器，null 表示显示所有
   const [selectedTrader, setSelectedTrader] = useState(null);
 
-  // 提取并处理物品数据
-  const questItems = useMemo(() => extractQuestItems(), []);
+  // 提取并处理物品数据，过滤掉卢布
+  const questItems = useMemo(() => {
+    const allItems = extractQuestItems();
+    // 过滤掉卢布
+    return allItems.filter((item) => item.itemName !== '卢布');
+  }, []);
 
   // 提取所有商人列表
   const traders = useMemo(() => {
@@ -108,15 +112,29 @@ const QuestItems = () => {
     return Array.from(traderSet).sort((a, b) => a.localeCompare(b, 'zh-CN'));
   }, [questItems]);
 
-  // 根据商人过滤物品
+  // 根据商人过滤物品，并计算该商人的所需数量
   const filteredItems = useMemo(() => {
     if (!selectedTrader) {
       return questItems;
     }
-    // 只显示包含选定商人任务的物品
-    return questItems.filter((item) =>
-      item.tasks.some((task) => task.trader === selectedTrader)
-    );
+    // 只显示包含选定商人任务的物品，并重新计算数量
+    return questItems
+      .filter((item) =>
+        item.tasks.some((task) => task.trader === selectedTrader)
+      )
+      .map((item) => {
+        // 过滤出当前商人的任务
+        const traderTasks = item.tasks.filter(
+          (task) => task.trader === selectedTrader
+        );
+        // 计算该商人需要的总数量
+        const traderCount = traderTasks.reduce((sum, task) => sum + task.count, 0);
+        return {
+          ...item,
+          totalCount: traderCount,
+          tasks: traderTasks, // 只显示该商人的任务
+        };
+      });
   }, [questItems, selectedTrader]);
 
   // 根据排序方式排序物品
