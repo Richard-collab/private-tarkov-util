@@ -30,6 +30,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // 侧边栏固定宽度
@@ -57,6 +58,11 @@ const menuItems = [
     text: '任务流程',
     icon: <AccountTreeIcon />,
     path: '/task-flow',
+  },
+  {
+    text: '任务物品',
+    icon: <InventoryIcon />,
+    path: '/quest-items',
   },
 ];
 
