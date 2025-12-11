@@ -18,8 +18,11 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   Tooltip,
+  Chip,
+  Divider,
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 // 导入任务数据
 import { getAllTasks } from '../data/TaskData';
@@ -88,13 +91,37 @@ const extractQuestItems = () => {
 const QuestItems = () => {
   // 排序方式：'count' 按数量排序，'name' 按名称排序
   const [sortBy, setSortBy] = useState('count');
+  // 选中的商人过滤器，null 表示显示所有
+  const [selectedTrader, setSelectedTrader] = useState(null);
 
   // 提取并处理物品数据
   const questItems = useMemo(() => extractQuestItems(), []);
 
+  // 提取所有商人列表
+  const traders = useMemo(() => {
+    const traderSet = new Set();
+    questItems.forEach((item) => {
+      item.tasks.forEach((task) => {
+        traderSet.add(task.trader);
+      });
+    });
+    return Array.from(traderSet).sort((a, b) => a.localeCompare(b, 'zh-CN'));
+  }, [questItems]);
+
+  // 根据商人过滤物品
+  const filteredItems = useMemo(() => {
+    if (!selectedTrader) {
+      return questItems;
+    }
+    // 只显示包含选定商人任务的物品
+    return questItems.filter((item) =>
+      item.tasks.some((task) => task.trader === selectedTrader)
+    );
+  }, [questItems, selectedTrader]);
+
   // 根据排序方式排序物品
   const sortedItems = useMemo(() => {
-    const items = [...questItems];
+    const items = [...filteredItems];
     if (sortBy === 'count') {
       // 按数量降序排序
       items.sort((a, b) => b.totalCount - a.totalCount);
@@ -103,7 +130,7 @@ const QuestItems = () => {
       items.sort((a, b) => a.itemName.localeCompare(b.itemName, 'zh-CN'));
     }
     return items;
-  }, [questItems, sortBy]);
+  }, [filteredItems, sortBy]);
 
   /**
    * 处理排序方式改变
@@ -114,6 +141,14 @@ const QuestItems = () => {
     if (newSortBy !== null) {
       setSortBy(newSortBy);
     }
+  };
+
+  /**
+   * 处理商人过滤改变
+   * @param {string|null} trader - 商人名称，null表示显示所有
+   */
+  const handleTraderChange = (trader) => {
+    setSelectedTrader(trader);
   };
 
   return (
@@ -128,9 +163,40 @@ const QuestItems = () => {
         </Typography>
       </Box>
 
+      {/* 商人过滤区域 */}
+      <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
+        <Box sx={{ mb: 2 }}>
+          <Box display="flex" alignItems="center" gap={1} sx={{ mb: 1.5 }}>
+            <FilterListIcon color="action" />
+            <Typography variant="body2" color="text.secondary">
+              按商人筛选：
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            <Chip
+              label="全部"
+              onClick={() => handleTraderChange(null)}
+              color={selectedTrader === null ? 'primary' : 'default'}
+              variant={selectedTrader === null ? 'filled' : 'outlined'}
+              sx={{ cursor: 'pointer' }}
+            />
+            {traders.map((trader) => (
+              <Chip
+                key={trader}
+                label={trader}
+                onClick={() => handleTraderChange(trader)}
+                color={selectedTrader === trader ? 'primary' : 'default'}
+                variant={selectedTrader === trader ? 'filled' : 'outlined'}
+                sx={{ cursor: 'pointer' }}
+              />
+            ))}
+          </Box>
+        </Box>
+      </Paper>
+
       {/* 控制栏 - 排序选项 */}
       <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
-        <Box display="flex" alignItems="center" gap={2}>
+        <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
           <SortIcon color="action" />
           <Typography variant="body2" color="text.secondary">
             排序方式：
@@ -150,7 +216,7 @@ const QuestItems = () => {
             </ToggleButton>
           </ToggleButtonGroup>
           <Typography variant="body2" color="text.secondary" sx={{ ml: 'auto' }}>
-            共 {sortedItems.length} 种物品
+            {selectedTrader ? `${selectedTrader}: ` : ''}共 {sortedItems.length} 种物品
           </Typography>
         </Box>
       </Paper>
