@@ -17,6 +17,7 @@ import {
   Paper,
   ToggleButtonGroup,
   ToggleButton,
+  Tooltip,
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
 
@@ -26,8 +27,8 @@ import { getAllTasks } from '../data/TaskData';
 import itemsData from '../data/items.json';
 
 /**
- * 从所有任务中提取需要在战局拾取的物品
- * @returns {Array} 物品数组，每个元素包含 itemId, itemName, totalCount, imageUrl
+ * 从所有任务中提取需要提交的物品
+ * @returns {Array} 物品数组，每个元素包含 itemId, itemName, totalCount, imageUrl, tasks
  */
 const extractQuestItems = () => {
   const tasks = getAllTasks();
@@ -45,28 +46,33 @@ const extractQuestItems = () => {
     task.objectives.forEach((objective) => {
       // 只处理 giveItem 类型的目标
       if (objective.type === 'giveItem' && objective.item) {
-        // 检查描述中是否包含"在战局中"或"found in raid"
-        const isFindInRaid =
-          objective.description.includes('在战局中找到') ||
-          objective.description.includes('found in raid');
+        // 从objective中获取物品信息
+        const itemId = objective.item.id;
+        const itemName = objective.item.name;
+        const count = objective.count || 1;
 
-        if (isFindInRaid) {
-          // 从objective中获取物品信息
-          const itemId = objective.item.id;
-          const itemName = objective.item.name;
-
-          if (itemsMap.has(itemId)) {
-            // 如果物品已存在，累加数量
-            itemsMap.get(itemId).totalCount += objective.count || 1;
-          } else {
-            // 新物品，添加到Map
-            itemsMap.set(itemId, {
-              itemId,
-              itemName,
-              totalCount: objective.count || 1,
-              imageUrl: itemImageMap.get(itemId) || '',
-            });
-          }
+        if (itemsMap.has(itemId)) {
+          // 如果物品已存在，累加数量并添加任务信息
+          const existingItem = itemsMap.get(itemId);
+          existingItem.totalCount += count;
+          existingItem.tasks.push({
+            taskName: task.taskName,
+            trader: task.trader.name,
+            count: count,
+          });
+        } else {
+          // 新物品，添加到Map
+          itemsMap.set(itemId, {
+            itemId,
+            itemName,
+            totalCount: count,
+            imageUrl: itemImageMap.get(itemId) || '',
+            tasks: [{
+              taskName: task.taskName,
+              trader: task.trader.name,
+              count: count,
+            }],
+          });
         }
       }
     });
@@ -118,7 +124,7 @@ const QuestItems = () => {
           任务物品收集统计
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          显示所有任务中需要在战局拾取并提交的物品及其数量
+          显示所有任务中需要提交的物品及其数量，悬停查看详细任务信息
         </Typography>
       </Box>
 
@@ -156,96 +162,121 @@ const QuestItems = () => {
             key={item.itemId}
             size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
           >
-            {/* 物品卡片 */}
-            <Card
-              sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 4,
-                },
-              }}
-            >
-              {/* 物品图片 */}
-              {item.imageUrl && (
-                <CardMedia
-                  component="img"
-                  image={item.imageUrl}
-                  alt={item.itemName}
-                  sx={{
-                    height: 160,
-                    objectFit: 'contain',
-                    bgcolor: '#f5f5f5',
-                    p: 2,
-                  }}
-                />
-              )}
-              {/* 如果没有图片，显示占位符 */}
-              {!item.imageUrl && (
-                <Box
-                  sx={{
-                    height: 160,
-                    bgcolor: '#e0e0e0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Typography variant="body2" color="text.secondary">
-                    暂无图片
+            {/* 物品卡片 - 添加Tooltip显示任务详情 */}
+            <Tooltip
+              title={
+                <Box sx={{ maxWidth: 400 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    需要该物品的任务：
                   </Typography>
+                  {item.tasks.map((task, index) => (
+                    <Box key={index} sx={{ mb: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                        • {task.taskName}
+                      </Typography>
+                      <Typography variant="caption" sx={{ ml: 2, color: 'rgba(255,255,255,0.8)' }}>
+                        {task.trader} - 需要 {task.count} 个
+                      </Typography>
+                    </Box>
+                  ))}
                 </Box>
-              )}
-              
-              {/* 物品信息 */}
-              <CardContent sx={{ flexGrow: 1, pt: 2 }}>
-                {/* 物品名称 */}
-                <Typography
-                  variant="subtitle1"
-                  component="h3"
-                  gutterBottom
-                  sx={{
-                    fontWeight: 'bold',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    minHeight: '3em',
-                  }}
-                >
-                  {item.itemName}
-                </Typography>
-
-                {/* 所需数量 */}
-                <Box
-                  sx={{
-                    mt: 2,
-                    p: 1.5,
-                    bgcolor: 'primary.light',
-                    borderRadius: 1,
-                    textAlign: 'center',
-                  }}
-                >
-                  <Typography variant="body2" color="primary.contrastText" sx={{ mb: 0.5 }}>
-                    所需数量
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    component="div"
+              }
+              arrow
+              placement="top"
+              enterDelay={300}
+              leaveDelay={200}
+            >
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  cursor: 'help',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 4,
+                  },
+                }}
+              >
+                {/* 物品图片 */}
+                {item.imageUrl && (
+                  <CardMedia
+                    component="img"
+                    image={item.imageUrl}
+                    alt={item.itemName}
                     sx={{
-                      fontWeight: 'bold',
-                      color: 'primary.contrastText',
+                      height: 160,
+                      objectFit: 'contain',
+                      bgcolor: '#f5f5f5',
+                      p: 2,
+                    }}
+                  />
+                )}
+                {/* 如果没有图片，显示占位符 */}
+                {!item.imageUrl && (
+                  <Box
+                    sx={{
+                      height: 160,
+                      bgcolor: '#e0e0e0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
-                    {item.totalCount}
+                    <Typography variant="body2" color="text.secondary">
+                      暂无图片
+                    </Typography>
+                  </Box>
+                )}
+                
+                {/* 物品信息 */}
+                <CardContent sx={{ flexGrow: 1, pt: 2 }}>
+                  {/* 物品名称 */}
+                  <Typography
+                    variant="subtitle1"
+                    component="h3"
+                    gutterBottom
+                    sx={{
+                      fontWeight: 'bold',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      minHeight: '3em',
+                    }}
+                  >
+                    {item.itemName}
                   </Typography>
-                </Box>
-              </CardContent>
-            </Card>
+
+                  {/* 所需数量 */}
+                  <Box
+                    sx={{
+                      mt: 2,
+                      p: 1.5,
+                      bgcolor: 'primary.light',
+                      borderRadius: 1,
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Typography variant="body2" color="primary.contrastText" sx={{ mb: 0.5 }}>
+                      所需数量
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      component="div"
+                      sx={{
+                        fontWeight: 'bold',
+                        color: 'primary.contrastText',
+                      }}
+                    >
+                      {item.totalCount}
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Tooltip>
           </Grid>
         ))}
       </Grid>
