@@ -26,22 +26,25 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 
 // 导入任务数据
 import { getAllTasks } from '../data/TaskData';
-// 导入物品数据
-import itemsData from '../data/items.json';
+// 导入 Context Hook
+import { useData } from '../context/DataContext';
 
 /**
  * 从所有任务中提取需要提交的物品
+ * @param {Array} items - 物品列表
  * @returns {Array} 物品数组，每个元素包含 itemId, itemName, totalCount, imageUrl, tasks
  */
-const extractQuestItems = () => {
+const extractQuestItems = (items) => {
   const tasks = getAllTasks();
   const itemsMap = new Map();
 
   // 创建物品ID到图片URL的映射
   const itemImageMap = new Map();
-  itemsData.items.forEach((item) => {
-    itemImageMap.set(item.id, item.image8xLink);
-  });
+  if (items) {
+    items.forEach((item) => {
+      itemImageMap.set(item.id, item.image8xLink);
+    });
+  }
 
   // 遍历所有任务
   tasks.forEach((task) => {
@@ -101,6 +104,7 @@ const extractQuestItems = () => {
  * @returns {JSX.Element} 任务物品收集页面
  */
 const QuestItems = () => {
+  const { items } = useData();
   // 排序方式：'count' 按数量排序，'name' 按名称排序
   const [sortBy, setSortBy] = useState('count');
   // 选中的商人过滤器，null 表示显示所有
@@ -108,10 +112,10 @@ const QuestItems = () => {
 
   // 提取并处理物品数据，过滤掉卢布
   const questItems = useMemo(() => {
-    const allItems = extractQuestItems();
+    const allItems = extractQuestItems(items);
     // 过滤掉卢布
     return allItems.filter((item) => item.itemName !== '卢布');
-  }, []);
+  }, [items]);
 
   // 提取所有商人列表
   const traders = useMemo(() => {

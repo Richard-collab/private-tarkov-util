@@ -15,21 +15,17 @@ import { Box, Typography, Grid, Pagination, Paper } from '@mui/material';
 import BasicItemCard from './BasicItemCard';
 import BasicItem from '../utils/BasicItem';
 import { getFavoriteIds } from '../utils/favorites';
-
-// 导入物品数据
-import itemsData from '../data/items.json';
+import { useData } from '../context/DataContext';
 
 // 每页显示的物品数量
 const ITEMS_PER_PAGE = 20;
-
-// 创建物品ID到物品数据的映射，提高查找效率 O(1)
-const itemsMap = new Map(itemsData.items.map(item => [item.id, item]));
 
 /**
  * 收藏物品组件
  * @returns {JSX.Element} 收藏物品列表
  */
 export default function FavoritedItems() {
+    const { items: allItems } = useData();
     // 收藏的物品列表状态
     const [favoritedItems, setFavoritedItems] = useState<BasicItem[]>([]);
     // 当前页码
@@ -41,6 +37,7 @@ export default function FavoritedItems() {
      */
     const loadFavoritedItems = useCallback(() => {
         const favoriteIds = getFavoriteIds();
+        const itemsMap = new Map(allItems.map(item => [item.id, item]));
         
         // 使用Map进行O(1)查找，从物品数据中筛选收藏的物品
         const items: BasicItem[] = [];
@@ -63,7 +60,7 @@ export default function FavoritedItems() {
         
         setFavoritedItems(items);
         return items.length;
-    }, []);
+    }, [allItems]);
 
     // 组件挂载时加载收藏物品
     useEffect(() => {

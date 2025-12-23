@@ -24,6 +24,10 @@ import {
   Divider,
   IconButton,
   Tooltip,
+  FormControlLabel,
+  Switch,
+  Button,
+  CircularProgress,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
@@ -31,7 +35,9 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useData } from '../context/DataContext';
 
 // 侧边栏固定宽度
 const DRAWER_WIDTH = 240;
@@ -78,6 +84,8 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
   // 获取当前路由位置
   const location = useLocation();
+  // 获取数据上下文
+  const { gameMode, toggleGameMode, refreshData, isLoading, lastUpdated } = useData();
 
   /**
    * 处理菜单项点击事件
@@ -169,7 +177,7 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
         </List>
       </Box>
 
-      {/* 底部区域 - 夜间模式切换和版权信息 */}
+      {/* 底部区域 - 数据控制和夜间模式 */}
       <Box
         sx={{
           mt: 'auto',
@@ -178,6 +186,47 @@ const Sidebar = ({ darkMode, toggleDarkMode }) => {
           borderColor: 'divider',
         }}
       >
+        {/* 数据控制区域 */}
+        <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              数据模式:
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={gameMode === 'pve'}
+                  onChange={toggleGameMode}
+                  size="small"
+                  color="primary"
+                />
+              }
+              label={<Typography variant="body2">{gameMode === 'pve' ? 'PVE' : 'PVP'}</Typography>}
+              labelPlacement="start"
+              sx={{ m: 0 }}
+            />
+          </Box>
+
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={isLoading ? <CircularProgress size={16} /> : <RefreshIcon />}
+            onClick={() => refreshData()}
+            disabled={isLoading}
+            fullWidth
+          >
+            {isLoading ? '更新中...' : '更新数据'}
+          </Button>
+
+          {lastUpdated && (
+            <Typography variant="caption" color="text.secondary" align="center" display="block">
+              上次更新: {new Date(lastUpdated).toLocaleTimeString()}
+            </Typography>
+          )}
+        </Box>
+
+        <Divider sx={{ mb: 2 }} />
+
         {/* 夜间模式切换按钮 */}
         <Box
           sx={{

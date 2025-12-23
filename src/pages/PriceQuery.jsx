@@ -28,16 +28,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 
-// 导入物品数据（mock 数据）
-import itemsData from '../data/items.json';
 // 导入收藏功能工具
 import { isFavorited, toggleFavorite } from '../utils/favorites';
+// 导入 Context Hook
+import { useData } from '../context/DataContext';
 
 /**
  * 物价查询页面组件
  * @returns {JSX.Element} 物价查询页面
  */
 const PriceQuery = () => {
+  const { items } = useData();
   // 搜索关键词状态
   const [searchKeyword, setSearchKeyword] = useState('');
   // 查询结果状态
@@ -72,7 +73,7 @@ const PriceQuery = () => {
     }
 
     // 在物品数据中进行模糊搜索
-    const results = itemsData.items.filter((item) =>
+    const results = items.filter((item) =>
       item.name.toLowerCase().includes(searchKeyword.toLowerCase().trim())
     );
 
