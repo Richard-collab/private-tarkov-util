@@ -1,11 +1,12 @@
 import { Grid } from "@mui/material";
 import BasicItemCard from "./BasicItemCard";
 import BasicItem from "../utils/BasicItem";
-// 读取 data/items.json 文件
-import itemsData from '../data/items.json';
+import { useData } from "../context/DataContext";
 
 export default function ListBasicItemCard({ n = 60, keyword = '', ascending = false}) {
-    let dataList = itemsData.items;
+    const { items } = useData();
+    // Create a copy to sort
+    let dataList = [...items];
     let forUseBasicItemList: BasicItem[] = [];
     let l = 0;
     let i = 0;
