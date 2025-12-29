@@ -21,6 +21,7 @@ import Home from './pages/Home';
 import PriceQuery from './pages/PriceQuery';
 import TaskFlowDemo from './pages/TaskFlowDemo';
 import QuestItems from './pages/QuestItems';
+import { DataProvider } from './context/DataContext';
 
 // 侧边栏宽度常量
 const DRAWER_WIDTH = 240;
@@ -108,36 +109,38 @@ function App() {
       <Analytics />
 
       {/* 路由配置 */}
-      <Router>
-        <Box sx={{ display: 'flex' }}>
-          {/* 侧边栏导航 */}
-          <Sidebar darkMode={mode === 'dark'} toggleDarkMode={toggleDarkMode} />
+      <DataProvider>
+        <Router>
+          <Box sx={{ display: 'flex' }}>
+            {/* 侧边栏导航 */}
+            <Sidebar darkMode={mode === 'dark'} toggleDarkMode={toggleDarkMode} />
 
-          {/* 主内容区域 */}
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              p: 3,
-              width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` },
-              minHeight: '100vh',
-              bgcolor: 'background.default',
-            }}
-          >
-            {/* 路由配置 */}
-            <Routes>
-              {/* 首页路由 */}
-              <Route path="/" element={<Home />} />
-              {/* 物价查询页面路由 */}
-              <Route path="/price-query" element={<PriceQuery />} />
-              {/* 任务流程页面路由 */}
-              <Route path="/task-flow" element={<TaskFlowDemo />} />
-              {/* 任务物品收集统计页面路由 */}
-              <Route path="/quest-items" element={<QuestItems />} />
-            </Routes>
+            {/* 主内容区域 */}
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+                p: 3,
+                width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` },
+                minHeight: '100vh',
+                bgcolor: 'background.default',
+              }}
+            >
+              {/* 路由配置 */}
+              <Routes>
+                {/* 首页路由 */}
+                <Route path="/" element={<Home />} />
+                {/* 物价查询页面路由 */}
+                <Route path="/price-query" element={<PriceQuery />} />
+                {/* 任务流程页面路由 */}
+                <Route path="/task-flow" element={<TaskFlowDemo />} />
+                {/* 任务物品收集统计页面路由 */}
+                <Route path="/quest-items" element={<QuestItems />} />
+              </Routes>
+            </Box>
           </Box>
-        </Box>
-      </Router>
+        </Router>
+      </DataProvider>
     </ThemeProvider>
   );
 }
