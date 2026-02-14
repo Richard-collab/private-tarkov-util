@@ -10,9 +10,6 @@ import {
   Box,
   Container,
   Typography,
-  Card,
-  CardContent,
-  CardMedia,
   Grid,
   Paper,
   ToggleButtonGroup,
@@ -28,6 +25,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { getAllTasks } from '../data/TaskData';
 // 导入 Context Hook
 import { useData } from '../context/DataContext';
+import { UnifiedItemCard } from '../components/common/UnifiedItemCard';
 
 /**
  * 从所有任务中提取需要提交的物品
@@ -286,70 +284,13 @@ const QuestItems = () => {
               enterDelay={300}
               leaveDelay={200}
             >
-              <Card
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  cursor: 'help',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: 4,
-                  },
-                }}
-              >
-                {/* 物品图片 */}
-                {item.imageUrl && (
-                  <CardMedia
-                    component="img"
-                    image={item.imageUrl}
-                    alt={item.itemName}
-                    sx={{
-                      height: 160,
-                      objectFit: 'contain',
-                      bgcolor: '#f5f5f5',
-                      p: 2,
-                    }}
-                  />
-                )}
-                {/* 如果没有图片，显示占位符 */}
-                {!item.imageUrl && (
-                  <Box
-                    sx={{
-                      height: 160,
-                      bgcolor: '#e0e0e0',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Typography variant="body2" color="text.secondary">
-                      暂无图片
-                    </Typography>
-                  </Box>
-                )}
-                
-                {/* 物品信息 */}
-                <CardContent sx={{ flexGrow: 1, pt: 2 }}>
-                  {/* 物品名称 */}
-                  <Typography
-                    variant="subtitle1"
-                    component="h3"
-                    gutterBottom
-                    sx={{
-                      fontWeight: 'bold',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      minHeight: '3em',
-                    }}
-                  >
-                    {item.itemName}
-                  </Typography>
-
+              <div>
+                <UnifiedItemCard
+                  title={item.itemName}
+                  imageUrl={item.imageUrl}
+                  imageHeight={160}
+                  sx={{ cursor: 'help' }}
+                >
                   {/* 所需数量 */}
                   <Box
                     sx={{
@@ -374,8 +315,8 @@ const QuestItems = () => {
                       {item.totalCount}
                     </Typography>
                   </Box>
-                </CardContent>
-              </Card>
+                </UnifiedItemCard>
+              </div>
             </Tooltip>
           </Grid>
         ))}
