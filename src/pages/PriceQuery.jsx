@@ -15,23 +15,18 @@ import {
   TextField,
   Button,
   Typography,
-  Card,
-  CardContent,
-  CardMedia,
   Grid,
   Paper,
   Container,
   Divider,
-  IconButton,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import StarIcon from '@mui/icons-material/Star';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 // 导入收藏功能工具
 import { isFavorited, toggleFavorite } from '../utils/favorites';
 // 导入 Context Hook
 import { useData } from '../context/DataContext';
+import { UnifiedItemCard } from '../components/common/UnifiedItemCard';
 
 /**
  * 物价查询页面组件
@@ -194,124 +189,59 @@ const PriceQuery = () => {
               md={4}       // 中等屏幕：每行3个
               lg={3}       // 大屏幕：每行4个
             >
-              {/* 物品卡片 */}
-              <Card
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  position: 'relative',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: 4,
-                  },
-                }}
+              <UnifiedItemCard
+                title={item.name}
+                imageUrl={item.image8xLink}
+                imageHeight={160}
+                isFavorited={isFavorited(item.id)}
+                onFavoriteToggle={() => handleFavoriteClick(item.id)}
               >
-                {/* 物品图片 */}
-                <CardMedia
-                  component="img"
-                  image={item.image8xLink}
-                  alt={item.name}
-                  sx={{
-                    height: 160,
-                    objectFit: 'contain',
-                    bgcolor: '#f5f5f5',
-                    p: 1,
-                  }}
-                />
-                {/* 物品信息 */}
-                <CardContent sx={{ flexGrow: 1 }}>
-                  {/* 物品名称 */}
-                  <Typography
-                    variant="subtitle1"
-                    component="h3"
-                    gutterBottom
-                    sx={{
-                      fontWeight: 'bold',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      minHeight: '3em',
-                    }}
-                  >
-                    {item.name}
+                {/* 价格信息 */}
+                <Box sx={{ mt: 1 }}>
+                  {/* 市场价格 */}
+                  <Typography variant="body2" color="text.secondary">
+                    市场价格：
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: item.avg24hPrice ? 'success.main' : 'text.disabled',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      {formatPrice(item.avg24hPrice)} ₽
+                    </Typography>
                   </Typography>
 
-                  {/* 价格信息 */}
-                  <Box sx={{ mt: 1 }}>
-                    {/* 市场价格 */}
-                    <Typography variant="body2" color="text.secondary">
-                      市场价格：
-                      <Typography
-                        component="span"
-                        sx={{
-                          color: item.avg24hPrice ? 'success.main' : 'text.disabled',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {formatPrice(item.avg24hPrice)} ₽
-                      </Typography>
-                    </Typography>
+                  {/* 基础价格 */}
+                  <Typography variant="body2" color="text.secondary">
+                    基础价格：{formatPrice(item.basePrice)} ₽
+                  </Typography>
 
-                    {/* 基础价格 */}
-                    <Typography variant="body2" color="text.secondary">
-                      基础价格：{formatPrice(item.basePrice)} ₽
-                    </Typography>
+                  {/* 物品尺寸 */}
+                  <Typography variant="body2" color="text.secondary">
+                    尺寸：{item.height} × {item.width}（{item.height * item.width}格）
+                  </Typography>
 
-                    {/* 物品尺寸 */}
-                    <Typography variant="body2" color="text.secondary">
-                      尺寸：{item.height} × {item.width}（{item.height * item.width}格）
+                  {/* 单格价值 */}
+                  <Typography variant="body2" color="text.secondary">
+                    单格价值：
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: item.avg24hPrice ? 'primary.main' : 'text.disabled',
+                        fontWeight: 'medium',
+                      }}
+                    >
+                      {calculateSlotValue(item.avg24hPrice, item.height, item.width)} ₽
                     </Typography>
+                  </Typography>
 
-                    {/* 单格价值 */}
-                    <Typography variant="body2" color="text.secondary">
-                      单格价值：
-                      <Typography
-                        component="span"
-                        sx={{
-                          color: item.avg24hPrice ? 'primary.main' : 'text.disabled',
-                          fontWeight: 'medium',
-                        }}
-                      >
-                        {calculateSlotValue(item.avg24hPrice, item.height, item.width)} ₽
-                      </Typography>
-                    </Typography>
-
-                    {/* 物品重量 */}
-                    <Typography variant="body2" color="text.secondary">
-                      重量：{item.weight} kg
-                    </Typography>
-                  </Box>
-                </CardContent>
-                {/* 收藏按钮 - 固定在左下角，与 BasicItemCard 保持一致 */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    bottom: 8,
-                    right: 8,
-                  }}
-                >
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleFavoriteClick(item.id);
-                    }}
-                    sx={{
-                      color: isFavorited(item.id) ? 'warning.main' : 'action.disabled',
-                      bgcolor: isFavorited(item.id) ? 'rgba(255, 193, 7, 0.1)' : 'rgba(0, 0, 0, 0.04)',
-                      '&:hover': {
-                        bgcolor: isFavorited(item.id) ? 'rgba(255, 193, 7, 0.2)' : 'rgba(0, 0, 0, 0.08)',
-                      },
-                    }}
-                    aria-label={isFavorited(item.id) ? '取消收藏' : '添加收藏'}
-                  >
-                    {isFavorited(item.id) ? <StarIcon /> : <StarBorderIcon />}
-                  </IconButton>
+                  {/* 物品重量 */}
+                  <Typography variant="body2" color="text.secondary">
+                    重量：{item.weight} kg
+                  </Typography>
                 </Box>
-              </Card>
+              </UnifiedItemCard>
             </Grid>
           ))}
         </Grid>
