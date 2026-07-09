@@ -17,7 +17,6 @@ import { Handle, Position } from '@xyflow/react';
 import type { NodeProps, Node } from '@xyflow/react';
 import {
   Box,
-  Card,
   CardContent,
   Typography,
   Chip,
@@ -38,6 +37,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PersonIcon from '@mui/icons-material/Person';
 import type { TaskData } from '../types/Task';
+import { AppCard } from './common/AppCard';
 
 /**
  * TaskNode 节点类型定义
@@ -89,18 +89,13 @@ function TaskNodeComponent({ data, selected }: TaskNodeProps) {
         style={{ background: '#555' }}
       />
       
-      <Card
+      <AppCard
+        selected={selected}
+        hoverable // Task nodes can be hovered
         sx={{
           minWidth: 320,
           maxWidth: 400,
-          border: selected ? '2px solid #1976d2' : '1px solid #e0e0e0',
-          borderRadius: 2,
-          boxShadow: selected ? 4 : 2,
           bgcolor: 'background.paper',
-          transition: 'all 0.2s ease-in-out',
-          '&:hover': {
-            boxShadow: 4,
-          },
         }}
       >
         <CardContent sx={{ p: 2 }}>
@@ -287,7 +282,7 @@ function TaskNodeComponent({ data, selected }: TaskNodeProps) {
             </>
           )}
         </CardContent>
-      </Card>
+      </AppCard>
 
       {/* 输出连接点 - 用于连接后续任务 */}
       <Handle 
